@@ -5,7 +5,15 @@ use_directory_urls: false
 theme:
   name: material
 
+plugins:
+  - search
+  - multirepo:
+      repos:
+        - section: lxdtools
+          import_url: "https://github.com/Unity-Environmental-University/lxd-tools?branch=release/3.0.0"
+
 nav:
   - Home: index.md
   - LXD Extension:
-      - Knowledge Base: "!import https://github.com/Unity-Environmental-University/lxd-tools?branch=release/3.0.0&docs_dir=docs"
+      # This looks inside the 'lxdtools' import for the specific file
+      - Knowledge Base: lxdtools/KNOWLEDGE_BASE.md
