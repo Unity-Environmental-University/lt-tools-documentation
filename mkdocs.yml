@@ -1,6 +1,6 @@
 site_name: LXD Tools Portal
 site_url: https://siekmang.github.io/mkdocs-poc/
-use_directory_urls: false
+use_directory_urls: true
 
 theme:
   name: material
@@ -14,5 +14,4 @@ plugins:
 
 nav:
   - Home: index.md
-  - LXD Extension:
-      - Knowledge Base: "!import lxdtools"
+  - LXD Extension: "!import lxdtools"
