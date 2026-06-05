@@ -10,7 +10,14 @@ The site is defined in [mkdocs.yml](mkdocs.yml). Each tool's docs live in its ow
 
 ## Adding a new tool
 
-1. **Prepare the tool's repository** — Add a `docs/` folder to the tool's repo. MkDocs expects at least one `.md` file there. A `docs/index.md` is a good starting point.
+1. **Prepare the tool's repository** — Add a `docs/` folder to the tool's repo. MkDocs expects at least one `.md` file there.
+    A mkdocs.yml file is required at the root of the repository. It needs at least a `nav` section mapping page names to actual docs files.
+    ```yaml
+    nav:
+      - Getting Started: README.md
+      - Frontend Design: FRONTEND_README.md
+      - Backend Design: BACKEND_README.md
+    ```
 
 2. **Register the tool here** — Open [mkdocs.yml](mkdocs.yml) and add an entry to the `nav` section:
 
