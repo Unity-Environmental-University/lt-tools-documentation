@@ -11,10 +11,6 @@
         <link rel="canonical" href="https://siekmang.github.io/mkdocs-poc/learning-design-extension/BUILD_PROCESS.html">
       
       
-        <link rel="prev" href="../index.html">
-      
-      
-        <link rel="next" href="KNOWLEDGE_BASE.html">
       
       
         
@@ -25,7 +21,7 @@
     
     
       
-        <title>Build Process - Learning Technology Tools Portal</title>
+        <title>LXD Tools Extension Build Process - Learning Technology Tools Portal</title>
       
     
     
@@ -102,7 +98,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Build Process
+              LXD Tools Extension Build Process
             
           </span>
         </div>
@@ -222,20 +218,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -256,7 +250,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -274,7 +268,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../USER_GUIDE.md" class="md-nav__link">
+      <a href="README.dist.md" class="md-nav__link">
         
   
   
@@ -302,7 +296,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../README.md" class="md-nav__link">
+      <a href="README.md" class="md-nav__link">
         
   
   
@@ -327,37 +321,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Build Process
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="BUILD_PROCESS.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="docs/BUILD_PROCESS.md" class="md-nav__link">
         
   
   
@@ -373,298 +340,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Overview
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#workflow-trigger" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Workflow Trigger
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Workflow Trigger">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#when-the-workflow-runs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        When the workflow runs
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#what-triggers-it-not-to-run" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What triggers it NOT to run
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pre-requisites" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pre-requisites
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Pre-requisites">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#repository-requirements" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Repository requirements
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#secrets-and-credentials" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Secrets and credentials
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#build-process-steps" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Build Process Steps
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#important-considerations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Important Considerations
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Important Considerations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#version-management" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Version Management
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#security" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Security
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#storage-retention" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Storage Retention
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#repository-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Repository Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#workflow-execution-environment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Workflow Execution Environment
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#file-outputs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        File Outputs
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Troubleshooting
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Troubleshooting">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#build-fails-at-version-validation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Build fails at version validation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#chrome-extension-fails-to-sign" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Chrome extension fails to sign
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#monitoring-and-notifications" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Monitoring and Notifications
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#maintenance" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Maintenance
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Maintenance">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#before-modifying-the-workflow" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Before modifying the workflow
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#related-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Related Documentation
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -677,7 +352,7 @@
   
   
     <li class="md-nav__item">
-      <a href="KNOWLEDGE_BASE.html" class="md-nav__link">
+      <a href="docs/KNOWLEDGE_BASE.md" class="md-nav__link">
         
   
   
