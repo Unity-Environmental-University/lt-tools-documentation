@@ -1,0 +1,1529 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://siekmang.github.io/mkdocs-poc/lisa/BACKEND_README.html">
+      
+      
+        <link rel="prev" href="FRONTEND_README.html">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Backend Design - Learning Technology Tools Portal</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lisa-backend" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Learning Technology Tools Portal" class="md-header__button md-logo" aria-label="Learning Technology Tools Portal" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Learning Technology Tools Portal
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Backend Design
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Learning Technology Tools Portal" class="md-nav__button md-logo" aria-label="Learning Technology Tools Portal" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Learning Technology Tools Portal
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Design Extension
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Learning Design Extension
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../USER_GUIDE.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../README.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../learning-design-extension/BUILD_PROCESS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build Process
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../learning-design-extension/KNOWLEDGE_BASE.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knowledge Base
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ueu-canvas package
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ueu-canvas package
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ueu-canvas-package/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint Summary Script
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Sprint Summary Script
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sprint-summary-script/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LISA
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LISA
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="FRONTEND_README.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontend Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backend Design
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="BACKEND_README.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backend Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Running">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#development" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Development
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database-sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Sync
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Database Sync">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database-indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Indexes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment Variables
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Endpoints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compliance-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compliance Logic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linting-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linting &amp; Formatting
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Running">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#development" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Development
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database-sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Sync
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Database Sync">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database-indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Indexes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment Variables
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Endpoints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compliance-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compliance Logic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linting-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linting &amp; Formatting
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="lisa-backend">LISA Backend</h1>
+<p>Flask API server for the LISA Instructor Compliance Dashboard. Pulls Canvas LMS data via the Instructure DAP client, stores it in PostgreSQL, and serves compliance metrics to the frontend.</p>
+<hr />
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>Python 3.12</strong> (required by scripts; 3.11+ is the minimum per DAP client docs)</li>
+<li><strong>Linux environment</strong> — the <code>instructure-dap-client</code> package requires linux-based Python. On Windows, run inside WSL.</li>
+<li><strong>PostgreSQL</strong> running and accessible (see Docker setup repo linked in the root README)</li>
+<li><strong>Node.js / npm</strong> — only needed if running the full dev stack via <code>launch_dev.sh</code></li>
+</ul>
+<hr />
+<h2 id="setup">Setup</h2>
+<p><strong>1. Create and populate <code>.env</code></strong></p>
+<p>Copy <code>env.example</code> to <code>.env</code> and fill in all values. See <a href="#environment-variables">Environment Variables</a> below.</p>
+<p><strong>2. Install dependencies</strong></p>
+<pre><code class="language-bash">uv sync
+</code></pre>
+<p><strong>3. Initialize the database</strong></p>
+<p>The PostgreSQL database must already exist and be running. To populate it with Canvas data for the first time:</p>
+<pre><code class="language-bash">source .venv/bin/activate
+python3.12 operate_db.py init all
+</code></pre>
+<p>This pulls all tracked tables from Canvas DAP into the database. It may take a while on first run.</p>
+<hr />
+<h2 id="running">Running</h2>
+<h3 id="development">Development</h3>
+<p>From the repo root, <code>scripts/launch_dev.sh</code> starts both the Flask backend (port 5001) and the Vite frontend dev server in one step:</p>
+<pre><code class="language-bash">bash lisa_backend/scripts/launch_dev.sh
+</code></pre>
+<p>The frontend dev server proxies <code>/api</code> requests to the Flask process, keeping session cookies on the same origin. Note: the backend does <strong>not</strong> auto-reload on file changes (<code>use_reloader=False</code>) — restart it manually after edits.</p>
+<p>To run just the backend:</p>
+<pre><code class="language-bash">export FLASK_ENV=development
+uv run python3.12 api_server.py
+</code></pre>
+<h3 id="production">Production</h3>
+<p><code>scripts/launch_prod.sh</code> starts the Waitress WSGI server on port 5000 and automatically restarts it on non-zero exits:</p>
+<pre><code class="language-bash">bash lisa_backend/scripts/launch_prod.sh
+</code></pre>
+<p>In production, Flask also serves the compiled frontend from <code>../lisa_frontend/dist/</code>. Build the frontend before starting the server:</p>
+<pre><code class="language-bash">cd ../lisa_frontend &amp;&amp; npm run build
+</code></pre>
+<p>On <code>unitycanvas-tcc</code>, this script is launched automatically at startup via Windows Task Scheduler.</p>
+<hr />
+<h2 id="database-sync">Database Sync</h2>
+<p>Canvas data is kept current by syncing with the DAP API. The sync script waits for PostgreSQL to be ready before running:</p>
+<pre><code class="language-bash">bash lisa_backend/scripts/run_sync.sh
+</code></pre>
+<p>This calls <code>python3.12 operate_db.py sync all</code> under the hood. On the production server, a cron job runs this script twice daily.</p>
+<p>You can also trigger a sync at any time from the UI, or invoke <code>operate_db.py</code> directly:</p>
+<pre><code class="language-bash"># Sync all tables
+python3.12 operate_db.py sync all
+
+# Sync specific tables
+python3.12 operate_db.py sync submissions,assignments
+
+# Initialize (first-time load) specific tables
+python3.12 operate_db.py init enrollments,courses
+</code></pre>
+<p><strong>Tracked tables:</strong> <code>users</code>, <code>courses</code>, <code>enrollment_terms</code>, <code>assignments</code>, <code>submissions</code>, <code>enrollments</code>, <code>content_tags</code>, <code>context_modules</code>, <code>discussion_entries</code>, <code>discussion_topics</code></p>
+<h3 id="database-indexes">Database Indexes</h3>
+<p>The following partial indexes exist on the <code>canvas</code> schema to support compliance queries. They are partial (i.e. indexed over a filtered subset of rows) because every query that joins on these tables always includes the filter condition — inactive/deleted rows are never needed. Partial indexes are smaller and faster than full indexes on the same columns since PostgreSQL only indexes the rows that queries actually touch.</p>
+<p><strong>submissions</strong>
+- <code>idx_submissions_course_user_active</code> — btree on <code>(course_id, user_id)</code> where <code>workflow_state NOT IN ('unsubmitted', 'deleted')</code></p>
+<p><strong>enrollments</strong>
+- <code>idx_enrollments_course_user_active</code> — btree on <code>(course_id, user_id)</code> where <code>workflow_state = 'active'</code>
+- <code>idx_enrollments_teacher_active</code> — btree on <code>(user_id, course_id)</code> where <code>workflow_state = 'active' AND type = 'TeacherEnrollment'</code></p>
+<p><strong>courses</strong>
+- <code>idx_courses_term_id</code> — btree on <code>(enrollment_term_id)</code></p>
+<hr />
+<h2 id="environment-variables">Environment Variables</h2>
+<p>Copy <code>env.example</code> to <code>.env</code>. All variables below are required for production.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DAP_CLIENT_ID</code></td>
+<td>Instructure DAP API client ID</td>
+</tr>
+<tr>
+<td><code>DAP_CLIENT_SECRET</code></td>
+<td>Instructure DAP API client secret</td>
+</tr>
+<tr>
+<td><code>DAP_API_URL</code></td>
+<td>Instructure DAP API endpoint URL</td>
+</tr>
+<tr>
+<td><code>LISA_CANVAS_DB_NAME</code></td>
+<td>PostgreSQL database name</td>
+</tr>
+<tr>
+<td><code>LISA_CANVAS_DB_USER</code></td>
+<td>PostgreSQL username</td>
+</tr>
+<tr>
+<td><code>LISA_CANVAS_DB_PASSWORD</code></td>
+<td>PostgreSQL password</td>
+</tr>
+<tr>
+<td><code>LISA_CANVAS_DB_HOST</code></td>
+<td>PostgreSQL host (typically <code>localhost</code>)</td>
+</tr>
+<tr>
+<td><code>LISA_CANVAS_DB_PORT</code></td>
+<td>PostgreSQL port</td>
+</tr>
+<tr>
+<td><code>FLASK_ENV</code></td>
+<td><code>development</code> or <code>production</code></td>
+</tr>
+<tr>
+<td><code>FLASK_SECRET_KEY</code></td>
+<td>Secret key for Flask session encryption</td>
+</tr>
+<tr>
+<td><code>LDAP_SERVER</code></td>
+<td>LDAP server URL (e.g. <code>ldaps://subdomain.domain.com</code>)</td>
+</tr>
+<tr>
+<td><code>LDAP_BASE_DN</code></td>
+<td>Base DN for LDAP user searches</td>
+</tr>
+<tr>
+<td><code>LDAP_REQUIRED_GROUP</code></td>
+<td>Full CN of the AD group required for access</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Security note:</strong> In production (<code>FLASK_ENV=production</code>), <code>SESSION_COOKIE_SECURE</code> is set to <code>True</code>, ensuring session cookies are only sent over HTTPS.</p>
+</blockquote>
+<hr />
+<h2 id="project-structure">Project Structure</h2>
+<pre><code>lisa_backend/
+├── api_server.py           # Flask app: routes, auth, server startup
+├── operate_db.py           # CLI for database init/sync operations
+├── models/
+│   ├── matt_all_in_one.py  # SQLAlchemy reflection — auto-generates ORM classes from Canvas DB schema
+│   └── models.py           # Explicit SQLAlchemy models for app-owned tables (lisa schema)
+├── alembic/                # Alembic migration environment for app-owned (lisa schema) tables
+│   ├── env.py
+│   └── versions/
+├── alembic.ini             # Alembic configuration
+├── services/
+│   └── compliance_service.py  # Core compliance query and metric logic
+├── utils/
+│   ├── db_connection.py    # Builds database connection string from environment
+│   ├── dbupdate.py         # Canvas DAP sync logic (wraps instructure-dap-client)
+│   ├── config_db_logs.py   # Structured logging configuration
+│   └── constants.py        # Named constants (overdue thresholds, excluded titles, term patterns, page sizes)
+├── scripts/
+│   ├── launch_dev.sh       # Starts backend + frontend dev servers
+│   ├── launch_prod.sh      # Starts Waitress with auto-restart on failure
+│   ├── run_sync.sh         # Waits for DB ready, then runs Canvas DAP sync
+│   ├── setup_sync_cron.sh  # Registers run_sync.sh as a daily 6am cron job
+│   ├── backup_db.sh        # pg_dump via Docker → /mnt/e/lisa_backups/; prunes files older than 30 days
+│   └── setup_backup_cron.sh  # Registers backup_db.sh as a daily midnight cron job
+├── tests/
+│   └── test_compliance_service.py
+├── logs/                   # Runtime logs (gitignored)
+├── cache/                  # File-based response cache (gitignored)
+├── env.example             # Template for .env
+├── pyproject.toml          # Project metadata and dependencies
+└── uv.lock                 # Pinned dependency lockfile
+</code></pre>
+<hr />
+<h2 id="api-endpoints">API Endpoints</h2>
+<p>All endpoints are prefixed with <code>/api</code>. All except <code>health</code> and <code>login</code> require an active session.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/api/health</code></td>
+<td>Server health and version info</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/login</code></td>
+<td>Authenticate with campus LDAP credentials</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/logout</code></td>
+<td>Clear session</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/me</code></td>
+<td>Current logged-in username</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/terms</code></td>
+<td>All available terms (id → name)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/current_term</code></td>
+<td>Current term ID (<code>?isUnderGrad=true/false</code>)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/dashboard/instructors</code></td>
+<td>Paginated grading compliance data per instructor</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/dashboard/discussion-instructors</code></td>
+<td>Paginated discussion response compliance data per instructor</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/dashboard/announcement-instructors</code></td>
+<td>Paginated announcement compliance data per instructor</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/courses/&lt;id&gt;/submissions</code></td>
+<td>Submissions for a specific course</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/discussions/&lt;id&gt;/responses</code></td>
+<td>Discussion responses for a specific discussion</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/sync_request</code></td>
+<td>Trigger a Canvas DAP sync (async, returns 202)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/last_sync</code></td>
+<td>Timestamp of last successful sync</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/violations</code></td>
+<td>List all flags, optionally filtered by <code>flag_term_id</code>, <code>flag_type</code>, <code>instructor_id</code></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/violations</code></td>
+<td>Create a new flag (<code>instructor_id</code>, <code>flag_type</code>, <code>flag_term_id</code> required; <code>reason_for_flag</code> optional)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/violations/&lt;id&gt;</code></td>
+<td>Get a single flag by ID</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/api/violations/&lt;id&gt;</code></td>
+<td>Update flag type and/or reason</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/violations/&lt;id&gt;</code></td>
+<td>Delete a flag</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/violations/counts</code></td>
+<td>Per-instructor flag counts for a given term (<code>flag_term_id</code> required)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Instructor/discussion/announcement endpoint query params:</strong> <code>page</code>, <code>page_size</code>, <code>term</code>, <code>name</code>, <code>sort_column</code>, <code>sort_direction</code>, <code>start_date</code>, <code>end_date</code>, <code>is_CE</code></p>
+<p><strong>Submissions endpoint query params:</strong> <code>page</code>, <code>page_size</code>, <code>sort_column</code>, <code>sort_direction</code>, <code>start_date</code>, <code>end_date</code></p>
+<p><strong>Violations list query params:</strong> <code>flag_term_id</code>, <code>flag_type</code>, <code>instructor_id</code></p>
+<hr />
+<h2 id="compliance-logic">Compliance Logic</h2>
+<p>The core metric calculation lives in <code>services/compliance_service.py</code>. The key concept:</p>
+<ul>
+<li>A submission is <strong>overdue</strong> if it has been sitting ungraded past the compliance window.</li>
+<li>The window is <strong>72 hours</strong> for standard courses and <strong>48 hours</strong> for CE courses.</li>
+<li>The window starts from the <strong>due date</strong> for on-time student submissions, or from the <strong>submission timestamp</strong> for late student submissions.</li>
+</ul>
+<p>These thresholds are applied in <code>get_compliance_for_courses()</code>, which returns per-course counts that <code>api_server.py</code> aggregates per instructor.</p>
+<p>The thresholds, excluded assignment titles, term name patterns, and course code regex patterns are all defined as named constants in <code>utils/constants.py</code>. Pagination defaults and default sort columns/directions are sourced from <code>shared_config.json</code> (repo root) via <code>utils/constants.py</code>.</p>
+<hr />
+<h2 id="key-dependencies">Key Dependencies</h2>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>flask</code></td>
+<td>Web framework</td>
+</tr>
+<tr>
+<td><code>waitress</code></td>
+<td>Production WSGI server</td>
+</tr>
+<tr>
+<td><code>sqlalchemy</code></td>
+<td>ORM and database reflection</td>
+</tr>
+<tr>
+<td><code>psycopg2-binary</code></td>
+<td>PostgreSQL adapter</td>
+</tr>
+<tr>
+<td><code>instructure-dap-client</code></td>
+<td>Canvas DAP data sync</td>
+</tr>
+<tr>
+<td><code>ldap3</code></td>
+<td>LDAP/Active Directory authentication</td>
+</tr>
+<tr>
+<td><code>python-dotenv</code></td>
+<td><code>.env</code> file loading</td>
+</tr>
+<tr>
+<td><code>flask-cors</code></td>
+<td>CORS headers (development only)</td>
+</tr>
+</tbody>
+</table>
+<p>To add or update dependencies, edit <code>pyproject.toml</code> then run:</p>
+<pre><code class="language-bash">uv sync
+</code></pre>
+<hr />
+<h2 id="tests">Tests</h2>
+<pre><code class="language-bash">uv run pytest
+</code></pre>
+<p>Tests live in <code>tests/test_compliance_service.py</code> and use an in-memory SQLite database — no credentials or running PostgreSQL required.</p>
+<p><strong>What's covered:</strong></p>
+<ul>
+<li><code>get_term_info</code> — correct id→name mapping, empty table</li>
+<li><code>get_current_term</code> — UG vs grad selection (DE5W/DE8W), excludes "test" terms, excludes expired terms</li>
+<li><code>get_term_start_end</code> — correct date lookup, nonexistent term</li>
+<li><code>get_submissions_to_courses</code> — workflow state filtering (unsubmitted/deleted excluded), excluded assignment titles (Introductions, Integrity 1 &amp; 2), CE vs non-CE due date requirement, start/end date filtering, inactive enrollment exclusion, course ID scoping</li>
+<li><code>get_compliance_for_courses</code> — on-time overdue, late overdue, graded not counted as overdue, within-window not counted, 48h vs 72h threshold, multi-course grouping, CE mode column differences, date range propagation</li>
+<li><code>craft_instructors_courses_query</code> — query construction (execution requires PostgreSQL due to <code>array_agg</code> and regex <code>~</code> operator)</li>
+</ul>
+<hr />
+<h2 id="linting-formatting">Linting &amp; Formatting</h2>
+<p>Ruff is our linter &amp; formatter of choice.  </p>
+<pre><code class="language-bash">uv run ruff check
+uv run ruff format
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
