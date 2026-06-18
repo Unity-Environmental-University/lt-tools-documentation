@@ -6,7 +6,7 @@ This repo is the central hub that publishes the [LXD Tools Portal](https://unity
 
 ## How it works
 
-The site is defined in [mkdocs.yml](mkdocs.yml). Each tool's docs live in its own GitHub repository under a `docs/` folder. The `multirepo` plugin fetches those docs at build time using `!import` entries in the `nav` section. GitHub Actions builds and deploys the site to GitHub Pages on every push to `main`.
+The site is defined in [mkdocs.yml](mkdocs.yml). Each tool's docs live in its own GitHub repository under a `docs/` folder. The `multirepo` plugin fetches those docs at build time using `!import` entries in the `nav` section. GitHub Actions builds and deploys the site to GitHub Pages on every push to `main`. The deploy action also runs every Sunday so developers don't have to run a push to main here to update their documentation. If documentation needs to be updated sooner, there is a Run workflow button in `Actions` -> `Deploy MK-Docs Site`.
 
 ## Adding a new tool
 

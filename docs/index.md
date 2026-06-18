@@ -21,4 +21,4 @@ Welcome to the Learning Technology Tools Portal — a central hub for documentat
 
 ## Getting help
 
-If something in the documentation is unclear or out of date, contact the Learning Technology team or open an issue in the relevant tool's GitHub repository (linked in each tool's section).
+If something in the documentation is unclear or out of date, contact the Learning Technology team.
