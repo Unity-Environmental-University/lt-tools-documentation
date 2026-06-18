@@ -1,0 +1,62 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "types": ["jest", "@testing-library/jest-dom"],
+    "baseUrl": "src",
+    "paths": {
+      "@/*": [
+        "*"
+      ],
+      "@ueu/ueu-canvas": [
+        "../node_modules/@ueu/ueu-canvas/dist"
+      ],
+      "@ueu/ueu-canvas/courseTypes": [
+        "../node_modules/@ueu/ueu-canvas/dist/types"
+      ],
+      "@ueu/ueu-canvas/type": [
+        "../node_modules/@ueu/ueu-canvas/dist/types"
+      ],
+      "@ueu/ueu-canvas/*": [
+        "../node_modules/@ueu/ueu-canvas/dist/*"
+      ],
+      "@citations/*": [
+        "citations/*"
+      ],
+      "@publish/*": [
+        "publish/*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules",
+        "options": {
+          "customMatcher": "\\.module\\.css$"
+        }
+      }
+    ],
+    "sourceMap": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "es2020",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "src",
+    "tests",
+    "src/declarations.d.ts"
+  ]
+}

@@ -1,0 +1,29 @@
+.testRunning {
+  background-color: #d5c76f;
+  color: #FFF;
+  content: 'Running';
+}
+.testFailed {
+  background-color: red;
+  color: #FFF;
+  content: 'Failed';
+}
+.testSuccess {
+  background-color: darkgreen;
+  color: #FFF;
+  content: 'OK!';
+}
+
+.test-row {
+  padding-top: 0.5em;
+}
+
+.test-row-slim {
+  padding-top: 2px;
+  font-size: 0.5em;
+
+}
+
+.test-row:nth-child(even) {
+  background-color: #f0f0f0;
+}

@@ -1,0 +1,55 @@
+@import "react-datepicker/dist/react-datepicker.css";
+@import"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200";
+@import"https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp";
+  .course-row:nth-child(odd) {
+      background-color: #f0f0f0;
+  }
+
+  a.course-link:after {
+    content: '\e89d';
+    font-family: "Material Icons";
+  }
+
+  .course-row {
+    a.available:before {
+      content: '\e92f';
+      color: #6ca538;
+      font-family: "Material Icons";
+    }
+
+    a.unpublished:before {
+      content: '\f236';
+      color: #888;
+      font-family: "Material Icons";
+    }
+
+    a.completed:before {
+      content: '\e1c6';
+      color: #de7040;
+      font-family: "Material Icons";
+    }
+
+    a.deleted:before {
+      content: '\e92b';
+      color: #000;
+      font-family: "Material Icons";
+    }
+  }
+
+
+#lxd-publish-interface, #lxd-import-interface,  {
+
+
+  .rawHtml {
+    font-family: Courier;
+    background-color: #f0f0f0;
+    border: 1px solid #aaaaaa;
+  }
+  .button-container {
+    display: flex;
+    flex-direction: row-reverse;
+
+  }
+
+}
+
