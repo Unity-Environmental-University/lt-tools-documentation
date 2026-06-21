@@ -1333,6 +1333,7 @@
 <h3 id="when-the-workflow-runs">When the workflow runs</h3>
 <ul>
 <li>A pull request is merged to the main branch</li>
+<li>If the pull request has only .md and/or .yml files, the workflow will not run. This allows documentation and workflows to be iterated separately of release cycles.</li>
 <li>The event type must be 'closed' (not open, reopened, or synchronize)</li>
 </ul>
 <h3 id="what-triggers-it-not-to-run">What triggers it NOT to run</h3>
