@@ -14,6 +14,8 @@
         <link rel="prev" href="FRONTEND_README.html">
       
       
+        <link rel="next" href="CHANGELOG.html">
+      
       
         
       
@@ -892,6 +894,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CHANGELOG.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1169,7 +1199,7 @@ python3.12 operate_db.py sync submissions,assignments
 # Initialize (first-time load) specific tables
 python3.12 operate_db.py init enrollments,courses
 </code></pre>
-<p><strong>Tracked tables:</strong> <code>users</code>, <code>courses</code>, <code>enrollment_terms</code>, <code>assignments</code>, <code>submissions</code>, <code>enrollments</code>, <code>content_tags</code>, <code>context_modules</code>, <code>discussion_entries</code>, <code>discussion_topics</code></p>
+<p><strong>Tracked tables:</strong> <code>users</code>, <code>courses</code>, <code>enrollment_terms</code>, <code>assignments</code>, <code>submissions</code>, <code>enrollments</code>, <code>content_tags</code>, <code>context_modules</code>, <code>discussion_entries</code>, <code>discussion_topics</code>, <code>discussion_entry_participants</code>, <code>master_courses_child_subscriptions</code></p>
 <h3 id="database-indexes">Database Indexes</h3>
 <p>The following partial indexes exist on the <code>canvas</code> schema to support compliance queries. They are partial (i.e. indexed over a filtered subset of rows) because every query that joins on these tables always includes the filter condition — inactive/deleted rows are never needed. Partial indexes are smaller and faster than full indexes on the same columns since PostgreSQL only indexes the rows that queries actually touch.</p>
 <p><strong>submissions</strong>
@@ -1340,6 +1370,11 @@ python3.12 operate_db.py init enrollments,courses
 </tr>
 <tr>
 <td>GET</td>
+<td><code>/api/grade-distribution</code></td>
+<td>Paginated per-assignment grade distribution stats for a term (<code>term_id</code> required)</td>
+</tr>
+<tr>
+<td>GET</td>
 <td><code>/api/courses/&lt;id&gt;/submissions</code></td>
 <td>Submissions for a specific course</td>
 </tr>
@@ -1391,6 +1426,7 @@ python3.12 operate_db.py init enrollments,courses
 </tbody>
 </table>
 <p><strong>Instructor/discussion/announcement endpoint query params:</strong> <code>page</code>, <code>page_size</code>, <code>term</code>, <code>name</code>, <code>sort_column</code>, <code>sort_direction</code>, <code>start_date</code>, <code>end_date</code>, <code>is_CE</code></p>
+<p><strong>Grade distribution endpoint query params:</strong> <code>term_id</code> (required), <code>course_code</code>, <code>title_filter</code>, <code>group_by_section</code>, <code>order_by</code>, <code>order_desc</code>, <code>page</code>, <code>page_size</code></p>
 <p><strong>Submissions endpoint query params:</strong> <code>page</code>, <code>page_size</code>, <code>sort_column</code>, <code>sort_direction</code>, <code>start_date</code>, <code>end_date</code></p>
 <p><strong>Violations list query params:</strong> <code>flag_term_id</code>, <code>flag_type</code>, <code>instructor_id</code></p>
 <hr />

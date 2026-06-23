@@ -783,6 +783,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CHANGELOG.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -931,6 +959,7 @@ npm run build
     ├── DiscussionResponsesTable.tsx     # Response-level drill-down for a course
     ├── AnnouncementsInfoTable.tsx  # Announcement compliance instructor table
     ├── AnnouncementInstructorCourses.tsx  # Per-course announcement detail (expandable row)
+    ├── GradeDistributionTable.tsx  # Grade distribution view — per-assignment stats across sections
     ├── ExpandableInfoTable.tsx     # Shared expandable row wrapper
     ├── CourseTable.tsx             # Shared course-level table component
     ├── ExcludedTitlesFilter.tsx    # UI for managing excluded assignment titles (grading view only)
@@ -940,12 +969,13 @@ npm run build
 </code></pre>
 <hr />
 <h2 id="views">Views</h2>
-<p>The dashboard has four views, toggled by tab buttons at the top:</p>
+<p>The dashboard has five views, toggled by tab buttons at the top:</p>
 <p><strong>Grading Compliance</strong> — lists instructors with counts of overdue ungraded submissions. Clicking a row expands per-course detail; clicking a course opens the full submissions table for that course.</p>
-<p><strong>Discussion Response Compliance</strong> — lists instructors with their discussion response rates. Response rates are calculated per-discussion topic. Clicking a row expands per-course detail; clicking a course opens the discussion responses table.</p>
+<p><strong>Discussion Response Compliance</strong> — lists instructors with their discussion response rates and total discussion entries read. Response rates and entries-read counts are calculated per-discussion topic. Clicking a row expands per-course detail; clicking a course opens the discussion responses table.</p>
 <p><strong>Announcements</strong> — lists instructors with total announcement counts and scheduled announcement counts per course.</p>
 <p><strong>Flags</strong> — lists all recorded instructor flags (violations). Each row shows flag type (<code>grading</code>, <code>discussions</code>, <code>announcements</code>, <code>other</code>), term, date, and optional reason note. Flags can be edited or deleted inline. Filterable by term, instructor ID, flag type, reason text, and date range.</p>
-<p>The three compliance views each include a flag column showing the instructor's current-term flag count and total lifetime flag count. Clicking the flag button opens a dialog to record a new flag. Grading, Discussion, and Announcements views share the same filter controls: instructor name search, date range, term selector, and CE toggle.</p>
+<p><strong>Grade Distribution</strong> — lists per-assignment grade distribution statistics (mean, median, mode, sample standard deviation, min/max percentage and raw scores) aggregated across all sections sharing an assignment template (via <code>master_courses_child_subscriptions</code>). Filterable by term, course code, and assignment title, with an option to group by individual section instead of merging them. Sortable and paginated like the other views, but has no flag column and isn't part of the shared filter bar (it has its own term/course-code/title filters).</p>
+<p>The Grading, Discussion, and Announcements views each include a flag column showing the instructor's current-term flag count and total lifetime flag count. Clicking the flag button opens a dialog to record a new flag. They share the same filter controls: instructor name search, date range, term selector, and CE toggle.</p>
 <p>Instructor names are rendered as mailto links. Email addresses are derived from the instructor's name (first initial + last name + @unity.edu) because the canvas database does not store email addresses.</p>
 <p>Links are set to open in new tab by default (<code>&lt;base target="_blank" /&gt;</code>) in index.html</p>
 <hr />
