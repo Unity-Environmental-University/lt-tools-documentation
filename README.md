@@ -1,6 +1,6 @@
 # Learning Technology Tools Documentation
 
-![docs](https://github.com/Unity-Environmental-University/lt-tools-documentation/actions/workflows/deploy.yml/badge.svg)
+![docs](https://github.com/Unity-Environmental-University/lt-tools-documentation/actions/workflows/scheduled-deploy.yml/badge.svg)
 
 This repo is the central hub that publishes the [LXD Tools Portal](https://unity-environmental-university.github.io/lt-tools-documentation/). It uses [MkDocs Material](https://squidfunk.github.io/mkdocs-material/) and the [mkdocs-multirepo-plugin](https://github.com/jdoiro3/mkdocs-multirepo-plugin) to pull documentation from individual tool repositories and combine them into a single site.
 
@@ -39,12 +39,12 @@ Documentation lives inside each tool's own repository, not this one. To update o
 
 - Navigate to that tool's repo and edit files under its `docs/` folder.
 - Use standard Markdown. MkDocs Material supports [extended syntax](https://squidfunk.github.io/mkdocs-material/reference/).
-- The portal rebuilds automatically when this repo is pushed. To trigger a rebuild from a tool repo, send a `repository_dispatch` event of type `rebuild-docs` to this repo (see the workflow in [.github/workflows/deploy.yml](.github/workflows/deploy.yml)).
+- The portal rebuilds automatically when this repo is pushed to `main` and every Sunday. To pick up tool-repo changes sooner, use the Run workflow button for [.github/workflows/scheduled-deploy.yml](.github/workflows/scheduled-deploy.yml) in this repo's `Actions` tab.
 
 ## Local development
 
 ```bash
-pip install mkdocs-material mkdocs-multirepo-plugin
+pip install -r requirements.txt
 mkdocs serve
 ```
 
@@ -59,4 +59,4 @@ export GithubAccessToken=your_token_here
 mkdocs serve
 ```
 
-For the GitHub Actions workflow, store the token as a repository secret named `GH_TOKEN` and uncomment the corresponding line in [.github/workflows/deploy.yml](.github/workflows/deploy.yml).
+The GitHub Actions workflow reads the token from a repository secret named `GH_TOKEN` and passes it only to the build-and-deploy step in [.github/workflows/scheduled-deploy.yml](.github/workflows/scheduled-deploy.yml). The deploy needs this secret because `matt_lisa` is private. Use a fine-grained token with read-only access to the imported private repositories.
