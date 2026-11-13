@@ -1586,6 +1586,12 @@
 <h3 id="added">Added</h3>
 <h3 id="changed">Changed</h3>
 <h3 id="internal">Internal</h3>
+<ul>
+<li>Release workflow: <code>main-deploy.yml</code> now runs on push to <code>main</code> or manual dispatch (main only), uses a <code>production</code> environment, and is the only workflow that publishes. The old <code>manual-deploy.yml</code> ("Build testing") is removed; <code>build-testing.yml</code> (renamed from <code>pr-build.yml</code>) is the single build-only workflow and also runs manually.</li>
+<li>Pins workflow actions to commit SHAs and installs with <code>npm ci</code> (lockfile enforced) in the build, test and deploy workflows</li>
+<li>crx3 and web-ext are pinned in <code>.github/release-tools/</code> with their own lockfile instead of being fetched unpinned with <code>npx</code> during a release</li>
+<li>Release workflow: the Chrome signing key is only on disk while the .crx is packed, and the checkout no longer persists the write-scoped git token during the build</li>
+</ul>
 <h2 id="325">3.2.5</h2>
 <h3 id="added_1">Added</h3>
 <ul>

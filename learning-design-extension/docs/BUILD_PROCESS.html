@@ -596,6 +596,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#re-running-a-failed-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Re-running a failed deploy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#chrome-extension-fails-to-sign" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -639,6 +650,17 @@
     <span class="md-ellipsis">
       
         Before modifying the workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-the-release-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Updating the release tools
       
     </span>
   </a>
@@ -1296,6 +1318,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#re-running-a-failed-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Re-running a failed deploy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#chrome-extension-fails-to-sign" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1345,6 +1378,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#updating-the-release-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Updating the release tools
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1383,20 +1427,21 @@
 
 <h1 id="lxd-tools-extension-build-process">LXD Tools Extension Build Process</h1>
 <h2 id="overview">Overview</h2>
-<p>This document describes the automated build and deployment process for the LXD browser extension. The workflow is triggered when a pull request is merged to the main branch and handles building, signing, and distributing the extension across multiple platforms (Chrome and Firefox).</p>
+<p>This document describes the automated build and deployment process for the LXD browser extension. The workflow runs when a change is pushed to the main branch (in practice, when a pull request is merged) or when it is started manually from main, and handles building, signing, and distributing the extension across multiple platforms (Chrome and Firefox).</p>
 <p>The deployment pipeline manages version control, package signing, storage on Cloudflare R2, and maintains a clean version history.</p>
 <h2 id="workflow-trigger">Workflow Trigger</h2>
 <h3 id="when-the-workflow-runs">When the workflow runs</h3>
 <ul>
-<li>A pull request is merged to the main branch</li>
-<li>If the pull request has only .md and/or .yml files, the workflow will not run. This allows documentation and workflows to be iterated separately of release cycles.</li>
-<li>The event type must be 'closed' (not open, reopened, or synchronize)</li>
+<li>A push to the main branch, which in practice means a pull request was merged (branch protection requires a pull request for main)</li>
+<li>If the push only changes .md, .yml, .yaml and/or <code>.github/release-tools/</code> files, the workflow will not run. This allows documentation and workflows to be iterated separately of release cycles.</li>
+<li>A manual run (Actions → "Deploy Extension Updates" → Run workflow). This is a fallback, for example to re-run a deploy that failed partway. It always builds the tip of main.</li>
 </ul>
 <h3 id="what-triggers-it-not-to-run">What triggers it NOT to run</h3>
 <ul>
-<li>Pull request is closed without merging</li>
-<li>Pull request is opened or updated</li>
+<li>Pull request is closed without merging, opened or updated</li>
+<li>A manual run started on any ref other than main (the job is skipped)</li>
 </ul>
+<p>Test builds that must not publish use the separate <strong>Build testing</strong> workflow (<code>build-testing.yml</code>), which runs on pull requests and can be started manually for any branch. It uploads an unsigned <code>dist/</code> as a workflow artifact and never uses the secrets below.</p>
 <h2 id="pre-requisites">Pre-requisites</h2>
 <h3 id="repository-requirements">Repository requirements</h3>
 <ul>
@@ -1405,6 +1450,7 @@
 <li><code>updates.json</code> and <code>update.xml</code> files are present in the dist directory</li>
 </ul>
 <h3 id="secrets-and-credentials">Secrets and credentials</h3>
+<p>These are stored as secrets of the <code>production</code> GitHub environment, whose deployment branches are limited to <code>main</code>. Only the deploy job (<code>environment: production</code>) can read them, so workflows on other branches cannot.</p>
 <table>
 <thead>
 <tr>
@@ -1450,7 +1496,7 @@
 <h2 id="build-process-steps">Build Process Steps</h2>
 <p>The workflow performs the following automated steps in sequence:</p>
 <ol>
-<li><strong>Repository Checkout &amp; Setup</strong> — Clones the lxd-tools repository and installs Node.js 20 with all dependencies. Git tags are fetched to enable version detection.</li>
+<li><strong>Repository Checkout &amp; Setup</strong> — Clones the lxd-tools repository, sets up Node.js 24 and installs dependencies from the lockfile with <code>npm ci</code>. The packaging tools (<code>crx3</code>, <code>web-ext</code>) are installed at pinned versions from <code>.github/release-tools/</code> (see <a href="#updating-the-release-tools">Updating the release tools</a>). Git tags are fetched to enable version detection.</li>
 <li><strong>Version Validation</strong> — Reads the version from <code>package.json</code> and verifies it hasn't been deployed before by checking for an existing git tag. If a duplicate version is detected, the entire build fails with a clear error message to prevent accidental re-deployment.</li>
 <li><strong>Extension Compilation</strong> — Runs <code>npm run build</code> to compile the extension source code into the <code>dist</code> directory.</li>
 <li><strong>Platform-Specific Signing</strong> — The compiled extension is signed for both platforms:</li>
@@ -1463,7 +1509,7 @@
 </li>
 <li><strong>Upload to Cloudflare R2</strong> — All artifacts are uploaded to the R2 bucket with appropriate content types. This includes both signed extensions and update manifests needed by the browser extension update mechanisms.</li>
 <li><strong>Version Pruning</strong> — Automatically deletes old versions from R2, keeping only the 5 most recent releases of each file type (<code>.crx</code> and <code>.xpi</code>). This reduces storage costs while maintaining version history.</li>
-<li><strong>Sync to Build Repository</strong> — The entire <code>dist</code> directory is copied to the <code>lxd-tools-build</code> repository on the main branch, creating an audit trail of all deployments with commits attributed to <code>github-actions[bot]</code>.</li>
+<li><strong>Sync to Build Repository</strong> — The entire <code>dist</code> directory is copied to the <code>lxd-tools-build</code> repository on the <code>stable</code> branch, creating an audit trail of all deployments with commits attributed to <code>github-actions[bot]</code>.</li>
 <li><strong>Git Release Management</strong> — A git tag matching the version number is created and pushed, and a corresponding release branch (<code>release/{VERSION}</code>) is created for long-term reference and potential rollback scenarios.</li>
 </ol>
 <h2 id="important-considerations">Important Considerations</h2>
@@ -1476,8 +1522,9 @@
 </ul>
 <h3 id="security">Security</h3>
 <ul>
+<li>The deploy job only runs from main and uses the <code>production</code> environment; the secrets are not available to other branches</li>
 <li>All secrets are referenced via <code>${{ secrets.VAR_NAME }}</code> syntax, per GitHub Actions format</li>
-<li>Chrome key is base64-encoded and must be decoded before use</li>
+<li>Chrome key is base64-encoded; it is decoded to the runner's temp directory only inside the pack step and deleted when that step ends</li>
 <li>Firefox API credentials are environment variables, never logged</li>
 <li>GitHub token used for pushing to build repository is scoped and temporary</li>
 </ul>
@@ -1490,12 +1537,12 @@
 <h3 id="repository-structure">Repository Structure</h3>
 <ul>
 <li><strong>Source code</strong>: <code>lxd-tools</code> repository (main branch)</li>
-<li><strong>Built artifacts</strong>: <code>lxd-tools-build</code> repository (main branch)</li>
+<li><strong>Built artifacts</strong>: <code>lxd-tools-build</code> repository (<code>stable</code> branch)</li>
 <li>This separation allows history tracking and rollback capability</li>
 </ul>
 <h2 id="workflow-execution-environment">Workflow Execution Environment</h2>
 <ul>
-<li><strong>Runner</strong>: ubuntu-latest</li>
+<li><strong>Runner</strong>: ubuntu-22.04</li>
 <li><strong>Permissions</strong>: <code>contents: write</code> (for creating tags and commits)</li>
 <li><strong>Duration</strong>: Typically 5-10 minutes depending on npm install time</li>
 </ul>
@@ -1543,9 +1590,14 @@
 <p><strong>Solution</strong>:</p>
 <ol>
 <li>Update <code>package.json</code> with a new version number</li>
-<li>Push the change to a new commit or amend the PR</li>
-<li>Re-merge the PR to trigger the workflow again</li>
+<li>Land the change on main through a new pull request that includes the bump</li>
 </ol>
+<h3 id="re-running-a-failed-deploy">Re-running a failed deploy</h3>
+<p>After fixing the cause, start the workflow manually from main (Actions → "Deploy Extension Updates" → Run workflow).</p>
+<ul>
+<li>If the failed run had already pushed the version tag, delete the tag first (<code>git push --delete origin {VERSION}</code>), and also the <code>release/{VERSION}</code> branch if it was created. Otherwise the duplicate-version check stops the new run.</li>
+<li>If the failure came after the Firefox signing step, AMO has already used that version number and will reject signing it again. Bump the version through a new pull request instead.</li>
+</ul>
 <h3 id="chrome-extension-fails-to-sign">Chrome extension fails to sign</h3>
 <p><strong>Cause</strong>: Invalid or missing <code>CHROME_KEY_PEM_B64</code> secret</p>
 <p><strong>Solution</strong>:</p>
@@ -1572,6 +1624,8 @@
 <li>Test signing keys are still valid</li>
 <li>Review and test any version management changes</li>
 </ol>
+<h3 id="updating-the-release-tools">Updating the release tools</h3>
+<p><code>crx3</code> and <code>web-ext</code> are pinned in <code>.github/release-tools/package.json</code> and its own <code>package-lock.json</code>, separate from the extension's dependencies so the root <code>overrides</code> do not apply to them. To update them, change the versions there, run <code>npm install</code> in that folder, and commit both files. A pull request that only changes <code>.github/release-tools/</code> does not start the deploy workflow and does not need a version bump; the new versions are used by the next release. The Build testing workflow runs <code>npm ci --ignore-scripts</code> in that folder on every pull request, so an out-of-sync lockfile fails the PR.</p>
 <h2 id="related-documentation">Related Documentation</h2>
 <ul>
 <li><a href="https://developer.chrome.com/docs/extensions/">Chrome Extension Documentation</a></li>
