@@ -59,21 +59,15 @@ export GithubAccessToken=your_token_here
 mkdocs serve
 ```
 
-The GitHub Actions workflow reads the token from a repository secret named `GH_TOKEN` and passes it only to the build-and-deploy step in [.github/workflows/scheduled-deploy.yml](.github/workflows/scheduled-deploy.yml). The token needs read access to `matt_lisa` and the private XR Education
-repositories listed in [mkdocs.yml](mkdocs.yml). Use a fine-grained token
-with read-only Contents access to these repositories.
+The GitHub Actions workflow reads the token from a repository secret named `GH_TOKEN` and passes it only to the build-and-deploy step in [.github/workflows/scheduled-deploy.yml](.github/workflows/scheduled-deploy.yml). The deploy token needs read access to `matt_lisa`. Use a fine-grained token
+with read-only Contents access to the private repositories the portal imports.
 
-## XR Education exports
+## XR Education guides
 
-The portal publishes to public GitHub Pages. Keep only public-facing material
-in the imported tree of each repository. For Summit, Trailhead, XR Tools,
-and XR Tools Updater Service, the portal imports `docs/portal/*`, with page
-paths taken from the source repository's root `mkdocs.yml`. A nav entry such
-as `index.md` is relative to `docs/portal/`. Waste Management imports its
-public `docs/` tree, including the interactive waypoint explainer.
+The portal imports the public Waste Management guide with MkDocs Multirepo.
+The XR Education overview links to the Summit, Trailhead, XR Tools, and XR
+Tools Updater Service guides on GitHub. Readers need access to those repositories.
 
-To update an XR guide, run `mkdocs build --strict` in the source repository
-with this repository's requirements installed. Merge the change into the
-source repository's `main` branch before rebuilding the portal. Check the
-[XR Education overview](docs/xr-education/index.md) for cross-repository links.
-The portal config enables Mermaid fences for imported pages.
+Each private project has a standalone `mkdocs.yml` and a `docs/portal/` directory.
+To preview a guide, install this portal's requirements and run
+`mkdocs serve` from the source repository's root.

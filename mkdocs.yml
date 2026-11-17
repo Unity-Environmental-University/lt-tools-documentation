@@ -26,8 +26,8 @@ nav:
   - LISA: "!import https://github.com/Unity-Environmental-University/matt_lisa?branch=main"
   - XR Education:
       - How the tools work together: xr-education/index.md
-      - Summit: "!import https://github.com/Unity-Environmental-University/Summit?branch=main&docs_dir=docs/portal/*"
-      - Trailhead: "!import https://github.com/Unity-Environmental-University/Trailhead?branch=main&docs_dir=docs/portal/*"
+      - Summit: https://github.com/Unity-Environmental-University/Summit/blob/main/docs/portal/index.md
+      - Trailhead: https://github.com/Unity-Environmental-University/Trailhead/blob/main/docs/portal/index.md
       - Waste Management: "!import https://github.com/Unity-Environmental-University/WasteManagement?branch=main"
-      - XR Tools: "!import https://github.com/Unity-Environmental-University/XR-Tools?branch=main&docs_dir=docs/portal/*"
-      - XR Tools Updater Service: "!import https://github.com/Unity-Environmental-University/XR-Tools-Updater-Service?branch=main&docs_dir=docs/portal/*"
+      - XR Tools: https://github.com/Unity-Environmental-University/XR-Tools/blob/main/docs/portal/index.md
+      - XR Tools Updater Service: https://github.com/Unity-Environmental-University/XR-Tools-Updater-Service/blob/main/docs/portal/index.md

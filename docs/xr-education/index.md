@@ -18,13 +18,16 @@ flowchart TB
 
 ## Find the right guide
 
+Summit, Trailhead, XR Tools, and XR Tools Updater Service open on GitHub.
+Sign in with access to the corresponding repository to read those guides.
+
 | I want to | Open |
 | --- | --- |
-| Send analytics or see what players do across sessions | [Summit](summit/index.md) |
-| Record tracked objects or inspect a specific play session | [Trailhead](trailhead/index.md) |
+| Send analytics or see what players do across sessions | [Summit](https://github.com/Unity-Environmental-University/Summit/blob/main/docs/portal/index.md) |
+| Record tracked objects or inspect a specific play session | [Trailhead](https://github.com/Unity-Environmental-University/Trailhead/blob/main/docs/portal/index.md) |
 | Trace the board and waypoint paths in a working Unity example | [Waste Management](waste-management/index.md) |
-| Upload a web build or work on the desktop utilities | [XR Tools](xr-tools/index.md) |
-| Check a signed desktop update for a platform | [XR Tools Updater Service](xr-tools-updater-service/index.md) |
+| Upload a web build or work on the desktop utilities | [XR Tools](https://github.com/Unity-Environmental-University/XR-Tools/blob/main/docs/portal/index.md) |
+| Check a signed desktop update for a platform | [XR Tools Updater Service](https://github.com/Unity-Environmental-University/XR-Tools-Updater-Service/blob/main/docs/portal/index.md) |
 
 ## Trace a game session
 
@@ -35,7 +38,7 @@ flowchart TB
 4. Open the session in Summit and follow the Trailhead link after the summary
    sync. The replay's recording ID is separate from the Summit session UUID.
 
-[Connect Summit and Trailhead in Unity](summit/unity.md) or try the
+[Connect Summit and Trailhead in Unity](https://github.com/Unity-Environmental-University/Summit/blob/main/docs/portal/unity.md) or try the
 [SludgeTower verification walkthrough](waste-management/verify.md). For
 experience-specific material, see the existing
 [Unity XR user documentation](https://github.com/Unity-Environmental-University/XR-User-Documentation)
@@ -54,6 +57,6 @@ flowchart LR
 ```
 
 XR Tools uploads web builds. Its updater service distributes new versions of
-the XR Tools desktop app. Use the [test deployment guide](xr-tools/deploy.md)
-for a web build and the [updater checks](xr-tools-updater-service/verify.md) for
+the XR Tools desktop app. Use the [test deployment guide](https://github.com/Unity-Environmental-University/XR-Tools/blob/main/docs/portal/deploy.md)
+for a web build and the [updater checks](https://github.com/Unity-Environmental-University/XR-Tools-Updater-Service/blob/main/docs/portal/verify.md) for
 a desktop release.
