@@ -9,7 +9,8 @@ Welcome to the Learning Technology Tools Portal — a central hub for documentat
 | **Learning Design Extension** | Browser extension and utilities for LXD workflows in Canvas  |
 | **ueu-canvas package**        | Python package for interacting with the Unity Canvas LMS API |
 | **Sprint Summary Script**     | Trello reporting tool for generating sprint summaries        |
-| **LISA**                      | Instructor Insights & Compliance Dashboard                   |   
+| **LISA**                      | Instructor Insights & Compliance Dashboard                   |
+| **[XR Education](xr-education/index.md)** | Game analytics, 3D replay, and the tools that ship XR builds |
 
 ## How to navigate
 

@@ -1,5 +1,5 @@
 site_name: Learning Technology Tools Portal
-site_url: https://siekmang.github.io/mkdocs-poc/
+site_url: https://unity-environmental-university.github.io/lt-tools-documentation/
 use_directory_urls: false
 
 theme:
@@ -11,9 +11,23 @@ plugins:
       # We leave this empty because the plugin is ignoring it anyway
       repos: []
 
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
 nav:
   - Home: index.md
   - Learning Design Extension: "!import https://github.com/Unity-Environmental-University/lxd-tools?branch=main&docs_dir=*"
   - ueu-canvas package: "!import https://github.com/Unity-Environmental-University/ueu_canvas?branch=main"
   - Sprint Summary Script: "!import https://github.com/siekmang/trello-reporting-tool"
   - LISA: "!import https://github.com/Unity-Environmental-University/matt_lisa?branch=main"
+  - XR Education:
+      - How the tools work together: xr-education/index.md
+      - Summit: "!import https://github.com/Unity-Environmental-University/Summit?branch=main&docs_dir=docs/portal/*"
+      - Trailhead: "!import https://github.com/Unity-Environmental-University/Trailhead?branch=main&docs_dir=docs/portal/*"
+      - Waste Management: "!import https://github.com/Unity-Environmental-University/WasteManagement?branch=main"
+      - XR Tools: "!import https://github.com/Unity-Environmental-University/XR-Tools?branch=main&docs_dir=docs/portal/*"
+      - XR Tools Updater Service: "!import https://github.com/Unity-Environmental-University/XR-Tools-Updater-Service?branch=main&docs_dir=docs/portal/*"
