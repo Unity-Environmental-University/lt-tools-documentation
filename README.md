@@ -59,21 +59,28 @@ export GithubAccessToken=your_token_here
 mkdocs serve
 ```
 
-The GitHub Actions workflow reads the token from a repository secret named `GH_TOKEN` and passes it only to the build-and-deploy step in [.github/workflows/scheduled-deploy.yml](.github/workflows/scheduled-deploy.yml). The token needs read access to `matt_lisa` and the private XR Education
-repositories listed in [mkdocs.yml](mkdocs.yml). Use a fine-grained token
-with read-only Contents access to these repositories.
+The GitHub Actions workflow reads the token from a repository secret named `GH_TOKEN` and passes it only to the build-and-deploy step in [.github/workflows/scheduled-deploy.yml](.github/workflows/scheduled-deploy.yml). The deploy token needs read-only access to the private `matt_lisa` repository.
 
 ## XR Education exports
 
-The portal publishes to public GitHub Pages. Keep only public-facing material
-in the imported tree of each repository. For Summit, Trailhead, XR Tools,
-and XR Tools Updater Service, the portal imports `docs/portal/*`, with page
-paths taken from the source repository's root `mkdocs.yml`. A nav entry such
-as `index.md` is relative to `docs/portal/`. Waste Management imports its
-public `docs/` tree, including the interactive waypoint explainer.
+The public portal imports Waste Management directly from its public
+repository, including its interactive waypoint explainer. The four private
+XR projects publish reviewed copies of selected pages under
+[`docs/xr-education/`](docs/xr-education/). The portal build uses those copies
+without needing access to the private XR repositories.
 
-To update an XR guide, run `mkdocs build --strict` in the source repository
-with this repository's requirements installed. Merge the change into the
-source repository's `main` branch before rebuilding the portal. Check the
-[XR Education overview](docs/xr-education/index.md) for cross-repository links.
-The portal config enables Mermaid fences for imported pages.
+To update a private XR guide:
+
+1. Make the edit under `docs/portal/` in the source repository. Preview it
+   there with `mkdocs build --strict` using this portal's requirements.
+2. Merge the source change into its `main` branch.
+3. From this repository, run `python3 scripts/sync-xr-docs.py` with Git
+   credentials that can read the four source repositories. If you add an
+   exported page, list it in the script and this repository's navigation.
+4. Review the exported changes for public release. Commit them with
+   [the source revisions](xr-education-sources.json) and merge the portal
+   change to rebuild the site.
+
+The refresh copies only the listed pages. It leaves the current copies intact
+if any source fetch fails. The portal config enables Mermaid for both exports
+and imported pages.
