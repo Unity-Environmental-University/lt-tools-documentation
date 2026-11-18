@@ -52,35 +52,37 @@ The site is available at `http://127.0.0.1:8000`. Changes to `docs/index.md` or 
 
 ## Private repositories
 
-If a tool repo is private, export a GitHub personal access token before building:
+To build locally, use Git credentials with read access to the source
+repositories. The GitHub CLI credential helper can reuse your existing login.
 
 ```bash
-export GithubAccessToken=your_token_here
-mkdocs serve
+gh auth setup-git
+mkdocs build --strict
 ```
 
-The GitHub Actions workflow reads the token from a repository secret named `GH_TOKEN` and passes it only to the build-and-deploy step in [.github/workflows/scheduled-deploy.yml](.github/workflows/scheduled-deploy.yml). The deploy token needs read-only access to the private `matt_lisa` repository.
+The GitHub Actions workflow maps the portal repository's `GH_TOKEN` secret to
+`GithubAccessToken` during the build. Use a token with **Contents: Read-only**
+access to the following Unity Environmental University repositories.
 
-## XR Education exports
+- `matt_lisa`
+- `Summit`
+- `Trailhead`
+- `XR-Tools`
+- `XR-Tools-Updater-Service`
 
-The public portal imports Waste Management directly from its public
-repository, including its interactive waypoint explainer. The four private
-XR projects publish reviewed copies of selected pages under
-[`docs/xr-education/`](docs/xr-education/). The portal build uses those copies
-without needing access to the private XR repositories.
+Verify the new credential can read all five before replacing the current
+secret in **Settings → Secrets and variables → Actions**.
 
-To update a private XR guide:
+## XR Education source docs
 
-1. Make the edit under `docs/portal/` in the source repository. Preview it
-   there with `mkdocs build --strict` using this portal's requirements.
-2. Merge the source change into its `main` branch.
-3. From this repository, run `python3 scripts/sync-xr-docs.py` with Git
-   credentials that can read the four source repositories. If you add an
-   exported page, list it in the script and this repository's navigation.
-4. Review the exported changes for public release. Commit them with
-   [the source revisions](xr-education-sources.json) and merge the portal
-   change to rebuild the site.
+Write Summit, Trailhead, XR Tools, and XR Tools Updater Service guides in
+`docs/portal/` in the respective repositories. The portal imports that
+directory from each repository's `main` branch. Add new pages to that
+repository's `mkdocs.yml` navigation and preview them with
+`mkdocs build --strict` using this portal's requirements. Every file in
+`docs/portal/` is eligible for publication on the public portal.
 
-The refresh copies only the listed pages. It leaves the current copies intact
-if any source fetch fails. The portal config enables Mermaid for both exports
-and imported pages.
+Waste Management uses its public `docs/` directory, including the
+interactive waypoint explainer. The portal config enables Mermaid for all
+imported guides. After a source change merges, the next scheduled or manual
+portal build picks it up.

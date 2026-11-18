@@ -26,21 +26,8 @@ nav:
   - LISA: "!import https://github.com/Unity-Environmental-University/matt_lisa?branch=main"
   - XR Education:
       - How the tools work together: xr-education/index.md
-      - Summit:
-          - Summit: xr-education/summit/index.md
-          - Send your first event: xr-education/summit/first-event.md
-          - Connect a Unity game: xr-education/summit/unity.md
-          - Data and reporting reference: xr-education/summit/data.md
-      - Trailhead:
-          - Trailhead: xr-education/trailhead/index.md
-          - Replay a sample recording: xr-education/trailhead/first-replay.md
-          - Record from Unity: xr-education/trailhead/unity.md
-          - Recording and sync reference: xr-education/trailhead/recording.md
+      - Summit: "!import https://github.com/Unity-Environmental-University/Summit?branch=main&docs_dir=docs/portal/*"
+      - Trailhead: "!import https://github.com/Unity-Environmental-University/Trailhead?branch=main&docs_dir=docs/portal/*"
       - Waste Management: "!import https://github.com/Unity-Environmental-University/WasteManagement?branch=main"
-      - XR Tools:
-          - XR Tools: xr-education/xr-tools/index.md
-          - Deploy a test build: xr-education/xr-tools/deploy.md
-          - Develop and release XR Tools: xr-education/xr-tools/development.md
-      - XR Tools Updater Service:
-          - XR Tools Updater Service: xr-education/xr-tools-updater-service/index.md
-          - Check an updater release: xr-education/xr-tools-updater-service/verify.md
+      - XR Tools: "!import https://github.com/Unity-Environmental-University/XR-Tools?branch=main&docs_dir=docs/portal/*"
+      - XR Tools Updater Service: "!import https://github.com/Unity-Environmental-University/XR-Tools-Updater-Service?branch=main&docs_dir=docs/portal/*"
