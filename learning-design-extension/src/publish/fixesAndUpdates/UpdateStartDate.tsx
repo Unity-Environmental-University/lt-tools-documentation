@@ -1,0 +1,420 @@
+import React, { useEffect, useRef, useState } from "react";
+import { Temporal } from "temporal-polyfill";
+import { Button, Row } from "react-bootstrap";
+import DatePicker from "react-datepicker";
+
+import {
+  getStartDateAssignments,
+  MalformedSyllabusError,
+  updatedDateSyllabusHtml,
+} from "@ueu/ueu-canvas/course/changeStartDate";
+import { getStartDateFromSyllabus } from "@ueu/ueu-canvas/course/changeStartDate";
+import { changeModuleLockDate, moduleGenerator } from "@ueu/ueu-canvas/course/modules";
+import { oldDateToPlainDate } from "@/date";
+
+import { Course } from "@ueu/ueu-canvas/course/Course";
+import { assignmentDataGen, updateAssignmentDueDates } from "@ueu/ueu-canvas/content/assignments";
+import { getPagedDataGenerator } from "@ueu/ueu-canvas/fetch/getPagedDataGenerator";
+import { BaseContentItem } from "@ueu/ueu-canvas/content/BaseContentItem";
+import { Discussion } from "@ueu/ueu-canvas/content/discussions/Discussion";
+
+import { IModuleData } from "@ueu/ueu-canvas/canvasDataDefs";
+import { renderAsyncGen } from "@ueu/ueu-canvas/canvasUtils";
+
+import { IAssignmentData, IDiscussionData } from "@ueu/ueu-canvas/content/types";
+import { addDays, startOfToday } from "date-fns";
+
+type UpdateStartDateProps = {
+  setAffectedItems?: (elements: React.ReactElement[]) => any;
+  setUnaffectedItems?: (elements: React.ReactElement[]) => any;
+  setFailedItems?: (elements: React.ReactElement[]) => any;
+  course: Course;
+  refreshCourse: (force?: boolean) => Promise<void>;
+  isDisabled: boolean;
+  startLoading: () => void;
+  endLoading: () => void;
+  setStartDateOutcome?: (outcome: string) => void;
+  onStartDateChangeStart?: () => void;
+  onStartDateChangeEnd?: () => void;
+};
+
+export function parseStartDateInput(value: string): Date | null {
+	const match = /^(\d{1,2})\/(\d{1,2})(?:\/(\d{4}))?$/.exec(value.trim());
+	if (!match) return null;
+
+	const month = Number(match[1]);
+	const day = Number(match[2]);
+	const year = match[3] ? Number(match[3]) : new Date().getFullYear();
+	const candidate = new Date(year, month - 1, day);
+	return candidate.getFullYear() === year && candidate.getMonth() === month - 1 && candidate.getDate() === day
+		? candidate
+		: null;
+}
+
+export function UpdateStartDate({
+  course,
+  isDisabled,
+  startLoading,
+  endLoading,
+  refreshCourse,
+  setAffectedItems,
+  setFailedItems,
+  setStartDateOutcome,
+  onStartDateChangeStart,
+  onStartDateChangeEnd,
+}: UpdateStartDateProps) {
+  const [startDate, setStartDate] = useState<Temporal.PlainDate | null>();
+  const [workingStartDate, setWorkingStartDate] = useState<Temporal.PlainDate | null>();
+  const [modules, setModules] = useState<IModuleData[] | undefined>();
+  const [syllabusText, setSyllabusText] = useState<string | null>(null);
+  const [_assignments, _setAssignments] = useState<IAssignmentData[] | undefined>();
+  const [mismatchError, setMismatchError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+	const [dateInputInvalid, setDateInputInvalid] = useState(false);
+
+  const [syllabusStartDate, setSyllabusStartDate] = useState<Temporal.PlainDate | null>(null);
+  const [_moduleStartDate, _setModuleStartDate] = useState<Temporal.PlainDate | null>(null);
+  const [assignmentsStartDate, setAssignmentsStartDate] = useState<Temporal.PlainDate | null>(null);
+	const isEditingDateInput = useRef(false);
+	const dateBeforeInput = useRef<Temporal.PlainDate | null>(null);
+	const rawDateInput = useRef("");
+
+  const recalculateStartDate = async () => {
+    setIsLoading(true);
+
+    try {
+      //Assignment
+
+      const _assignmentsStartDate = await getStartDateAssignments(course.id);
+      console.log("Assignment Start Date", _assignmentsStartDate?.toLocaleString());
+      setAssignmentsStartDate(_assignmentsStartDate);
+
+      //Syllabus
+      const localSyllabusText = syllabusText ?? (await course.getSyllabus());
+      if (!syllabusText) {
+        setSyllabusText(localSyllabusText);
+      }
+
+      const _syllabusStartDate = getStartDateFromSyllabus(localSyllabusText);
+      console.log("Syllabus Start Date", _syllabusStartDate.toLocaleString());
+      setSyllabusStartDate(_syllabusStartDate);
+
+      //Modules
+      const localModules = modules ?? (await renderAsyncGen(moduleGenerator(course.id)));
+      if (modules === undefined) setModules(localModules);
+
+      /*This isn't necessary anymore because the module start date is hard-set and doesn't flag any problems.
+            Leaving it in incase something changes in the future.
+          if(localModules[0].unlock_at) {
+              const _moduleStartDate = getModuleUnlockStartDate(localModules);
+              console.log("Module Start Date", _moduleStartDate?.toLocaleString());
+              setModuleStartDate(_moduleStartDate);
+          }*/
+
+      const errors: string[] = [];
+
+      const syllabusStartMonth = _syllabusStartDate.month;
+      const syllabusStartDay = _syllabusStartDate.day;
+
+      //if(!_moduleStartDate || _assignmentsStartDate.until(_moduleStartDate).days != 0) errors.push("Assignment and module lock do not match");
+      //if(syllabusStartMonth != _moduleStartDate?.month || syllabusStartDay != _moduleStartDate?.day) errors.push("Syllabus and module lock do not match");
+      if (syllabusStartMonth != _assignmentsStartDate.month || syllabusStartDay != _assignmentsStartDate.day)
+        errors.push("Syllabus and assignment dates do not match");
+
+      if (errors.length > 0) {
+        const errorString =
+          "Start date mismatch: Syllabus: " +
+          _syllabusStartDate.toLocaleString() +
+          ", Assignments: " +
+          _assignmentsStartDate.toLocaleString();
+        setMismatchError(errorString);
+        setStartDateOutcome?.(errorString);
+        return;
+      }
+
+      console.log("Start Date", _assignmentsStartDate?.toLocaleString());
+      setStartDate(_assignmentsStartDate);
+      setWorkingStartDate(_assignmentsStartDate);
+      setStartDateOutcome?.("success");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoading || mismatchError) return;
+    if (!course || !course.id) return;
+    if (!assignmentsStartDate || !syllabusStartDate) {
+      recalculateStartDate().catch((error) => {
+        console.error(error);
+        setMismatchError(error instanceof Error ? error.message : String(error));
+      });
+    }
+  }, [recalculateStartDate, course, isLoading, mismatchError]);
+
+  async function changeStartDate() {
+    startLoading();
+    onStartDateChangeStart?.();
+    let affectedItems: React.ReactElement[] = [];
+
+    try {
+      if (!workingStartDate) throw new StartDateNotSetError();
+      // I've changed this from syllabusText to _syllabusText because syllabusText exists at the top level.
+      const _syllabusText = syllabusText ?? (await course.getSyllabus());
+      if (!startDate) throw new StartDateNotSetError();
+      // Check that the syllabus can take the new date before anything else is changed (this only builds the new
+      // HTML, it saves nothing). Otherwise a syllabus it can't update, such as one with an unrecognized term name,
+      // would fail at the end, after the modules, assignments and announcements had already moved.
+      if (_syllabusText) updatedDateSyllabusHtml(_syllabusText, workingStartDate, isGradCourse(course));
+      const modules = await renderAsyncGen(moduleGenerator(course.id));
+      await changeModuleLockDate(course.id, modules[0], workingStartDate);
+
+      const assignmentResults = await updateAssignmentDates(course.id, startDate, workingStartDate);
+      affectedItems = [
+        ...affectedItems,
+        ...assignmentResults.map(({ assignment, newDueAt }) => ContentAffectedRow(assignment, newDueAt)),
+      ];
+      const contentDateOffset = startDate.until(workingStartDate).days;
+
+      const announcementGenerator = getPagedDataGenerator<IDiscussionData>(
+        `/api/v1/courses/${course.id}/discussion_topics`,
+        {
+          queryParams: {
+            only_announcements: true,
+          },
+        }
+      );
+
+      for await (const value of announcementGenerator) {
+        const discussion = new Discussion(value, course.id);
+        console.log(contentDateOffset);
+        await discussion.offsetPublishDelay(contentDateOffset);
+        affectedItems.push(ContentAffectedRow(discussion));
+      }
+
+      if (!_syllabusText) {
+        alert("There was an issue finding the start date in the syllabus.");
+        throw new MalformedSyllabusError();
+      }
+      const syllabusChanges = await updateSyllabus(_syllabusText, workingStartDate, course, startDate);
+      if (syllabusChanges) affectedItems = affectedItems.concat(syllabusChanges);
+
+      setAffectedItems?.(affectedItems);
+      await refreshCourse(true);
+      setStartDate(workingStartDate);
+      await recalculateStartDate();
+    } catch (error: any) {
+      console.log(error);
+      setAffectedItems?.(affectedItems);
+      setFailedItems?.([
+        <div className={"ui-alert"}>
+          <h2>{error.toString()}</h2>
+          <p>{error.stack}</p>
+        </div>,
+      ]);
+      console.error(error);
+    } finally {
+      endLoading();
+      onStartDateChangeEnd?.();
+    }
+  }
+
+	function updateStartDateValue(inDate: Date | null) {
+		if (inDate && !isEditingDateInput.current) setWorkingStartDate(oldDateToPlainDate(inDate));
+	}
+
+	function selectDateFromCalendar(inDate: Date | null) {
+		if (inDate) {
+			isEditingDateInput.current = false;
+			setDateInputInvalid(false);
+			setWorkingStartDate(oldDateToPlainDate(inDate));
+		}
+	}
+
+	function beginDateInput() {
+		isEditingDateInput.current = true;
+		dateBeforeInput.current = workingStartDate ?? null;
+		rawDateInput.current = "";
+	}
+
+	function captureRawDateInput(event?: React.SyntheticEvent<HTMLElement>) {
+		const value = (event?.target as HTMLInputElement | null)?.value;
+		if (typeof value === "string") rawDateInput.current = value;
+	}
+
+	function finishDateInput() {
+		if (!rawDateInput.current.trim()) {
+			isEditingDateInput.current = false;
+			return;
+		}
+
+		const parsedDate = parseStartDateInput(rawDateInput.current);
+
+		isEditingDateInput.current = false;
+		setDateInputInvalid(!parsedDate);
+		if (parsedDate) setWorkingStartDate(oldDateToPlainDate(parsedDate));
+		else if (dateBeforeInput.current) setWorkingStartDate(dateBeforeInput.current);
+	}
+
+  const _isDisabledLocally =
+    isDisabled ||
+    !course ||
+    !course.id ||
+    !workingStartDate ||
+    (startDate && workingStartDate.equals(startDate)) ||
+    startDate === null ||
+    mismatchError !== null ||
+    isLoading;
+
+	const jsDate = (date: Temporal.PlainDate) => {
+		return new Date(date.year, date.month - 1, date.day);
+	};
+
+	return (
+		<>
+			{isLoading && <div className="alert alert-info">Loading...</div>}
+			{!isLoading && (
+				<div className={"row"}>
+					{mismatchError && (
+						<div className={"ui-alert"}>
+							<h2>{mismatchError}</h2>
+						</div>
+					)}
+				</div>
+			)}
+			{workingStartDate && (
+				<div className={"row"}>
+					<div className={"col-sm-4"}>
+						<Button onClick={changeStartDate} disabled={_isDisabledLocally}>
+							Change Start Date
+						</Button>
+						<label>
+							Current:{" "}
+							{startDate?.toLocaleString("default", {
+								weekday: "short",
+								month: "short",
+								day: "numeric",
+								year: "numeric",
+							})}
+						</label>
+					</div>
+					<div className={"col-sm-4"}>
+						<DatePicker
+							strictParsing
+							dateFormat={["MM/dd/yyyy", "M/d/yyyy", "M/d"]}
+							selected={jsDate(workingStartDate)}
+							className={dateInputInvalid ? "start-date-invalid" : undefined}
+							onChange={updateStartDateValue}
+							onSelect={selectDateFromCalendar}
+							onFocus={beginDateInput}
+							onChangeRaw={captureRawDateInput}
+							onBlur={finishDateInput}
+							minDate={addDays(startOfToday(), -365)}
+							maxDate={addDays(startOfToday(), 365)}
+						/>
+						<label>
+							Target:{" "}
+							{workingStartDate?.toLocaleString("default", {
+								weekday: "short",
+								month: "short",
+								day: "numeric",
+								year: "numeric",
+							})}
+						</label>
+						{startDate && workingStartDate && (
+							<label>
+								{"\u0394"} days: {startDate.until(workingStartDate).days}
+							</label>
+						)}
+					</div>
+				</div>
+			)}
+			<Row>
+				<div className={"col-sm-4"}>
+					Update dates of assignments, announcements, and on syllabus
+				</div>
+			</Row>
+		</>
+	);
+}
+
+class StartDateNotSetError extends Error {
+  name = "StartDateNotSetError";
+}
+
+function isGradCourse(course: Course) {
+  const [courseNum] = course.courseCode?.match(/\d{3}/gi) ?? [""];
+  return parseInt(courseNum) >= 500;
+}
+
+async function updateSyllabus(
+  syllabusText: string,
+  updateStartDate: Temporal.PlainDate,
+  course: Course,
+  startDate: Temporal.PlainDate | null
+) {
+  const affectedItems: React.ReactElement[] = [];
+  const results = updatedDateSyllabusHtml(syllabusText, updateStartDate, isGradCourse(course));
+  if (syllabusText !== results.html) {
+    await course.changeSyllabus(results.html);
+    if (updateStartDate != startDate) {
+      affectedItems.push(
+        <>
+          <div className={"col-sm-6"}>Changed Lock Date</div>
+          <div className={"col-sm-6"}>
+            <a href={course.htmlContentUrl + "/modules"}>Modules Page</a>
+          </div>
+        </>
+      );
+    }
+    return affectedItems;
+  }
+}
+
+type PlainDate = Temporal.PlainDate;
+
+async function updateAssignmentDates(courseId: number, startDate: PlainDate, workingStartDate: PlainDate) {
+  const rawAssignments = await renderAsyncGen(assignmentDataGen(courseId));
+  const contentDateOffset = startDate.until(workingStartDate).days;
+
+  // Compute expected new dates from raw data BEFORE updateAssignmentDueDates modifies canvasData
+  const newDueDates = rawAssignments.map((a) => {
+    if (!a.due_at) return null;
+    const d = new Date(a.due_at);
+    d.setDate(d.getDate() + contentDateOffset);
+    return d;
+  });
+
+  const updatedAssignments = await updateAssignmentDueDates(contentDateOffset, rawAssignments, { courseId });
+  return updatedAssignments.map((assignment, i) => ({ assignment, newDueAt: newDueDates[i] }));
+}
+
+export function SyllabusAffectedItemsRows(courseId: number, results: { html: string; changedText: string[] }) {
+  return results.changedText.map((changedText) => (
+    <>
+      <div className={"col-sm-6"}>
+        <strong>Change:</strong>
+        {changedText}
+      </div>
+      <div className={"col-sm-6"}>
+        <a href={`/api/v1/courses/${courseId}/assignments/syllabus`} target={"_blank"}>
+          Syllabus
+        </a>
+      </div>
+    </>
+  ));
+}
+
+export function ContentAffectedRow(item: BaseContentItem, dueAt?: Date | null) {
+  const displayDate = dueAt !== undefined ? dueAt : item.dueAt;
+  return (
+    <>
+      <div className={"col-sm-6"}>
+        <a href={item.htmlContentUrl} target={"_blank"}>
+          {item.name}
+        </a>
+      </div>
+      <div className={"col-sm-6"}>{displayDate?.toString()}</div>
+    </>
+  );
+}

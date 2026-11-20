@@ -1,0 +1,111 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for a group membership record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "A join table of users and groups. Like enrollments, but for groups instead of courses."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the user object to which the membership belongs."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a `group_memberships` record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a `group_memberships` record was updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "accepted",
+                            "deleted",
+                            "invited",
+                            "rejected",
+                            "requested"
+                        ],
+                        "description": "The current state of the membership."
+                    },
+                    "sis_batch_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the SIS import if created through SIS. Only included if the user has permission to manage SIS information."
+                    },
+                    "group_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the group object to which the membership belongs."
+                    },
+                    "moderator": {
+                        "type": "boolean",
+                        "description": "Whether or not the user is a moderator of the group (the must also be an active member of the group to moderate)."
+                    },
+                    "uuid": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "UUID for a membership record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "user_id",
+                    "created_at",
+                    "updated_at",
+                    "workflow_state",
+                    "group_id",
+                    "uuid"
+                ],
+                "title": "A join table of users and groups. Like enrollments, but for groups instead of courses."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 1
+}

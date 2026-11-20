@@ -1,0 +1,153 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for an originality report record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Represents an \"originality score\" for a submission.",
+                "description": "Rows in this table are managed solely by LTI 2 tool providers that leverage the Canvas plagiarism detection\nplatform."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "error_message": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "The error message provided by the tool provider. Only set if there was an error processing the submission."
+                    },
+                    "attachment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The is of the attachment associated with the originality report."
+                    },
+                    "submission_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of the submission associated with the originality report."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when an `originality_reports` record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when an `originality_reports` record was updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "error",
+                            "pending",
+                            "scored"
+                        ],
+                        "description": "Workflow state of the originality report."
+                    },
+                    "originality_score": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "A number ranging from 0-100 indicating the level of potential plagiarism."
+                    },
+                    "originality_report_url": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "The url pointing to the originality report from the tool provider."
+                    },
+                    "originality_report_lti_url": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "The LTI launch URL that allows a user to view the originality report in the tool."
+                    },
+                    "link_id": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "Resource link ID of the assignment associated with the submission."
+                    },
+                    "submission_time": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Time the submission was submitted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "submission_id",
+                    "created_at",
+                    "updated_at",
+                    "workflow_state"
+                ],
+                "title": "Represents an \"originality score\" for a submission.",
+                "description": "Rows in this table are managed solely by LTI 2 tool providers that leverage the Canvas plagiarism detection\nplatform."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 1
+}

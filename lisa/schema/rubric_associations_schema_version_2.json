@@ -1,0 +1,155 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier of a rubric association record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Links a rubric to an assignment."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "purpose": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Whether or not the association is for grading (and thus linked to an assignment) or if it's to indicate the rubric should appear in its context. Values will be grading or bookmark."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp showing when a `rubric_associations` record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp showing when a `rubric_associations` record was updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "active",
+                            "deleted"
+                        ],
+                        "description": "The current state of a rubric association record."
+                    },
+                    "context_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for the context of `rubric_associations` (account, course)."
+                    },
+                    "context_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Course",
+                            "Account"
+                        ],
+                        "description": "The type of the object represented by `context_id`."
+                    },
+                    "association_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier of an associated object."
+                    },
+                    "association_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Account",
+                            "Course",
+                            "Assignment"
+                        ],
+                        "description": "The type of object associated."
+                    },
+                    "hide_points": {
+                        "type": "boolean",
+                        "description": "Flag indication whether to hide points from rubric."
+                    },
+                    "rubric_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier of a rubric tied to this association."
+                    },
+                    "use_for_grading": {
+                        "type": "boolean",
+                        "description": "Whether or not the associated rubric is used for grade calculation."
+                    },
+                    "summary_data": {
+                        "type": "string",
+                        "description": "Object that stores reusable comments made during assessments."
+                    },
+                    "hide_score_total": {
+                        "type": "boolean",
+                        "description": "Flag indicating whether to hide the score total for assessment results."
+                    },
+                    "bookmarked": {
+                        "type": "boolean",
+                        "description": "Flag indication whether rubric is bookmarked."
+                    },
+                    "hide_outcome_results": {
+                        "type": "boolean",
+                        "description": "Flag indicating to not post Outcomes results to Learning Mastery Gradebook."
+                    },
+                    "title": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The name of the object this rubric is associated with."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "purpose",
+                    "created_at",
+                    "updated_at",
+                    "workflow_state",
+                    "context_id",
+                    "context_type",
+                    "association_id",
+                    "association_type",
+                    "rubric_id"
+                ],
+                "title": "Links a rubric to an assignment."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 2
+}

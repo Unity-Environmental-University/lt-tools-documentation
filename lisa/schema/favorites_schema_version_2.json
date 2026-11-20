@@ -1,0 +1,92 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for a favorite record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "A record of items that a user has favorited, such as a Course.",
+                "description": "This affects how items are displayed in places like the Dashboard."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique ID of a user."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a favorites record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a favorites record was updated."
+                    },
+                    "context_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for the favorites's context (account, course, user)."
+                    },
+                    "context_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Course",
+                            "Group"
+                        ],
+                        "description": "The type of the object represented by `context_id`, typically `Course` or `Account` or `User`."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "A record of items that a user has favorited, such as a Course.",
+                "description": "This affects how items are displayed in places like the Dashboard."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 2
+}

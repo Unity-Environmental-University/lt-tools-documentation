@@ -1,0 +1,94 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier of a wiki record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Links a course to its wiki pages.",
+                "description": "There's only ever one per course, it is not highly used any longer, Wiki pages object is linked directly to\na course now."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp showing when a wikis record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp showing when a wikis record was updated."
+                    },
+                    "front_page_url": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "Captures the URL of the front page (wiki page) record if one exists."
+                    },
+                    "has_no_front_page": {
+                        "type": "boolean",
+                        "description": "Flag to determine if a course's wiki has a front page or not. No front page == true."
+                    },
+                    "title": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The title of the wiki."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Links a course to its wiki pages.",
+                "description": "There's only ever one per course, it is not highly used any longer, Wiki pages object is linked directly to\na course now."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 1
+}

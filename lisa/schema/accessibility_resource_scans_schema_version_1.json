@@ -1,0 +1,137 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for the accessibility resource scan."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Stores data about accessibility scans performed on course resources.",
+                "description": "Each scan represents an accessibility check performed on a wiki page, assignment, or attachment."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "course_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the course containing the scanned resource."
+                    },
+                    "wiki_page_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the wiki page that was scanned."
+                    },
+                    "assignment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the assignment that was scanned."
+                    },
+                    "attachment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the attachment that was scanned."
+                    },
+                    "error_message": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Error message if the scan failed."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "completed",
+                            "failed",
+                            "in_progress",
+                            "queued"
+                        ],
+                        "description": "The current state of the scan process."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the scan was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the scan was last updated."
+                    },
+                    "resource_name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The name of the scanned resource."
+                    },
+                    "resource_workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "published",
+                            "unpublished"
+                        ],
+                        "description": "The workflow state of the scanned resource."
+                    },
+                    "issue_count": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The number of accessibility issues found in the scan."
+                    },
+                    "resource_updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the resource was last updated."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "course_id",
+                    "workflow_state",
+                    "created_at",
+                    "updated_at",
+                    "resource_workflow_state",
+                    "issue_count"
+                ],
+                "title": "Stores data about accessibility scans performed on course resources.",
+                "description": "Each scan represents an accessibility check performed on a wiki page, assignment, or attachment."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 1
+}

@@ -1,0 +1,160 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier of a content migration record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Saves data about what and when was added to a course through a course copy or import."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "attachment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique ID of the package being imported."
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique ID of a user."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp showing when a `content_migrations` record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a `content_migrations` record was updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "created",
+                            "exported",
+                            "exporting",
+                            "failed",
+                            "imported",
+                            "importing",
+                            "pre_process_error",
+                            "pre_processed",
+                            "pre_processing",
+                            "queued"
+                        ],
+                        "description": "Current state of the content migration."
+                    },
+                    "context_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier of a `content_migrations` context."
+                    },
+                    "context_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Course",
+                            "Account",
+                            "Group",
+                            "User"
+                        ],
+                        "description": "The type of the object represented by `context_id`."
+                    },
+                    "overview_attachment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique ID of the packages overview.json file."
+                    },
+                    "exported_attachment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique ID of the resulting exported package."
+                    },
+                    "source_course_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The course to copy from for a course copy migration (required if doing course copy)."
+                    },
+                    "migration_type": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The type of the migration. Use the Migrator endpoint to see all available migrators. Examples include: `academic_benchmark_importer`, `angel_exporter`, `blackboard_exporter`, `canvas_cartridge_importer`, `common_cartridge_importer`, `course_copy_importer`, `d2l_exporter`, `master_course_import`, `moodle_converter`, `qti_converter`, `webct_scraper`,`zip_file_importer`, `context_external_tool_1234`."
+                    },
+                    "child_subscription_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique ID of the `master_courses_child_subscription` record indicating a blueprint association."
+                    },
+                    "migration_settings": {
+                        "type": "string",
+                        "description": "Ruby hash of settings that determine what data will get imported for this migration."
+                    },
+                    "started_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp showing when a content migration started."
+                    },
+                    "finished_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp showing when a content migration finished."
+                    },
+                    "progress": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "Current migration progress. 100 indicates done at 100%."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "workflow_state",
+                    "context_id"
+                ],
+                "title": "Saves data about what and when was added to a course through a course copy or import."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 2
+}

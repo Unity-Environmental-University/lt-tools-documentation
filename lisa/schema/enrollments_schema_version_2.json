@@ -1,0 +1,185 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the enrollment."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "This table stores user enrollments.",
+                "description": "An enrollment represents a user's association with a specific course and section. There may be multiple records\nassociated with a `course_id` and `user_id` combination (records are unique on: `course_id`, `user_id`,\n`course_section_id`, `role_id`, `workflow_state`, `associated_user_id`)."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "sis_batch_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for the SIS import. This field is only included if the user has permission to manage SIS information."
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique ID of the user."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The created time of the enrollment."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The updated time of the enrollment."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "creation_pending",
+                            "invited",
+                            "rejected",
+                            "active",
+                            "inactive",
+                            "completed",
+                            "deleted"
+                        ],
+                        "description": "Life-cycle state for the user's enrollment in the course."
+                    },
+                    "role_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the enrollment role."
+                    },
+                    "start_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The start time of the enrollment, in ISO8601 format."
+                    },
+                    "end_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The end time of the enrollment, in ISO8601 format."
+                    },
+                    "course_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique ID of the course."
+                    },
+                    "completed_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Enrollment completed date."
+                    },
+                    "course_section_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The Section Integration ID in which the enrollment is associated. This field is only included if the user has permission to view SIS information."
+                    },
+                    "grade_publishing_status": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Used internally with grade passback functionality."
+                    },
+                    "associated_user_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique ID of the associated user. Will be NULL unless type is ObserverEnrollment."
+                    },
+                    "self_enrolled": {
+                        "type": "boolean",
+                        "description": "Enrollment was created via self-enrollment."
+                    },
+                    "limit_privileges_to_course_section": {
+                        "type": "boolean",
+                        "description": "User can only access his or her own course section."
+                    },
+                    "last_activity_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The last activity time of the user for the enrollment. This time stamp updates when a user navigates through the course using the Course Navigation menu, replies to a discussion or submits an assignment or quiz, and when they access course files and pages (does not include mobile interactions or group participation)."
+                    },
+                    "total_activity_time": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The total activity time of the user for the enrollment, in seconds. If user is viewing a page and is enrolled in that particular course, then the time is incremented. Requires at least 2 minutes, but not more than 10 (e.g. if a student just checks their grade or due date and was on the page for less than 2 min, it doesn't get counted). May not be incremented for page views through mobile app (will get incremented for page views through mobile browser); does not include group activity or page views for videos that do not include intermediate page requests, such as a half-hour recorded lecture."
+                    },
+                    "sis_pseudonym_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "If enrolled via SIS import, which pseudonym was referenced to create this enrollment. It is the user ID that was referenced when an enrollment was created via SIS. it's used for some LTI calls to try and send consistent IDs. also used for splitting accidentally-merged-users to decide which way the enrollments should go."
+                    },
+                    "last_attended_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The last attended date of the user for the enrollment in a course. The UI facing field that could be set by an end user or API call."
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "StudentEnrollment",
+                            "TeacherEnrollment",
+                            "TaEnrollment",
+                            "DesignerEnrollment",
+                            "ObserverEnrollment",
+                            "StudentViewEnrollment"
+                        ],
+                        "description": "The base enrollment type."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "user_id",
+                    "created_at",
+                    "updated_at",
+                    "workflow_state",
+                    "role_id",
+                    "course_id",
+                    "course_section_id",
+                    "limit_privileges_to_course_section",
+                    "type"
+                ],
+                "title": "This table stores user enrollments.",
+                "description": "An enrollment represents a user's association with a specific course and section. There may be multiple records\nassociated with a `course_id` and `user_id` combination (records are unique on: `course_id`, `user_id`,\n`course_section_id`, `role_id`, `workflow_state`, `associated_user_id`)."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 2
+}

@@ -1,0 +1,102 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier of a master courses migration result record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Stores results for individual associated courses for a blueprint sync event."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "failed",
+                            "completed",
+                            "queued"
+                        ],
+                        "description": "The state of the import into the associated course (`failed`, `completed` or `queued`)."
+                    },
+                    "child_subscription_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of a relevant associated course subscription record."
+                    },
+                    "master_migration_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of a relevant blueprint migration record (sync event)."
+                    },
+                    "content_migration_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of a relevant import record on the associated course."
+                    },
+                    "import_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "full",
+                            "selective"
+                        ],
+                        "description": "Whether the blueprint export was for the entire course (`full`) or a partial (`selective`)."
+                    },
+                    "results": {
+                        "type": "string",
+                        "description": "Relevant results of the import (e.g. items that were not synced because they were modified by the associated course)."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "state",
+                    "child_subscription_id",
+                    "master_migration_id",
+                    "content_migration_id",
+                    "import_type"
+                ],
+                "title": "Stores results for individual associated courses for a blueprint sync event."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 1
+}

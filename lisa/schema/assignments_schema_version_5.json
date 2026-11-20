@@ -1,0 +1,476 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Primary key for this record in the Canvas assignments table."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "This table stores attributes for assignments.",
+                "description": "There is one record in this table for each assignment."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "integration_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Third Party unique identifier for Assignments."
+                    },
+                    "lti_context_id": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "UUID of the Canvas context in LTI standard. Secondary ID for this context, could be used in API to identify resource as well."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The time at which this assignment was originally created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The time at which this assignment was last modified."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "unpublished",
+                            "published",
+                            "deleted",
+                            "duplicating",
+                            "fail_to_import",
+                            "failed_to_duplicate",
+                            "failed_to_import",
+                            "failed_to_migrate",
+                            "importing",
+                            "migrating",
+                            "outcome_alignment_cloning",
+                            "failed_to_clone_outcome_alignment"
+                        ],
+                        "description": "Current workflow state of the assignment."
+                    },
+                    "due_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The due date for the assignment. Returns NULL if not present."
+                    },
+                    "unlock_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The unlock date, meaning that the assignment is unlocked after this date. Returns NULL if not present."
+                    },
+                    "lock_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The lock date, meaning that the assignment is locked after this date. Returns NULL if not present."
+                    },
+                    "points_possible": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "The maximum points possible for the assignment."
+                    },
+                    "grading_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "gpa_scale",
+                            "letter_grade",
+                            "not_graded",
+                            "pass_fail",
+                            "percent",
+                            "points",
+                            "default"
+                        ],
+                        "description": "The type of grading the assignment receives."
+                    },
+                    "submission_types": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "__dap_unspecified__",
+                                "discussion_topic",
+                                "online_quiz",
+                                "on_paper",
+                                "none",
+                                "external_tool",
+                                "online",
+                                "online_text_entry",
+                                "online_url",
+                                "online_upload",
+                                "media_recording",
+                                "not_graded",
+                                "wiki_page",
+                                "student_annotation",
+                                "default_external_tool"
+                            ],
+                            "title": "Type for column `assignments.submission_types`."
+                        },
+                        "description": "The types of submissions allowed for this assignment."
+                    },
+                    "assignment_group_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Identifies which assignment grouping the particular assignment is part of (assignment groups may have a scoring weight to determine how much of the assignment group contributes to the total grade)."
+                    },
+                    "grading_standard_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the grading standard being applied to this assignment. Valid if `grading_type` is `letter_grade` or `gpa_scale`."
+                    },
+                    "submissions_downloads": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Number of times submissions have been downloaded in a zip bundle."
+                    },
+                    "peer_review_count": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Represents the amount of reviews each user is assigned. NOTE: This key is NOT present unless you have automatic_peer_reviews set to true."
+                    },
+                    "peer_reviews_due_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp for when peer reviews should be completed."
+                    },
+                    "peer_reviews_assigned": {
+                        "type": "boolean",
+                        "description": "True if all peer reviews have been assigned."
+                    },
+                    "peer_reviews": {
+                        "type": "boolean",
+                        "description": "Indicates if peer reviews are required for this assignment."
+                    },
+                    "context_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the object this assignment belongs to. Typically course."
+                    },
+                    "context_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Course"
+                        ],
+                        "description": "The type of object this assignment belongs to."
+                    },
+                    "automatic_peer_reviews": {
+                        "type": "boolean",
+                        "description": "Indicates if peer reviews are assigned automatically. If false, the teacher is expected to manually assign peer reviews."
+                    },
+                    "all_day": {
+                        "type": "boolean",
+                        "description": "True if a specific time for when the assignment is due was not given. The effective due time will be 11:59pm."
+                    },
+                    "all_day_date": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "The date version of the due date if the `all_day` flag is true."
+                    },
+                    "could_be_locked": {
+                        "type": "boolean",
+                        "description": "True if the assignment is under a module that can be locked."
+                    },
+                    "migration_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The unique identifier of the migration that imported this assignment. For assignments which have been imported via a content migration, an opaque identifier for the assignment in its source. This field is used by Canvas to identify when an assignment is being re-imported, and can also be used to identify multiple assignments that have been copied from the same source."
+                    },
+                    "grade_group_students_individually": {
+                        "type": "boolean",
+                        "description": "If this is a group assignment, boolean flag indicating whether or not students will be graded individually."
+                    },
+                    "anonymous_peer_reviews": {
+                        "type": "boolean",
+                        "description": "If true, hide the identities of peer-reviewing and peer-reviewed students. Only relevant if `peer_reviews` is true."
+                    },
+                    "turnitin_enabled": {
+                        "type": "boolean",
+                        "description": "Flag indicating whether or not Turnitin has been enabled for the assignment. NOTE: This flag will not appear unless your account has the Turnitin plugin available."
+                    },
+                    "allowed_extensions": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Allowed file extensions, which take effect if `submission_types` includes `online_upload`."
+                    },
+                    "group_category_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the assignment's group set, if this is a group assignment. For group discussions, set `group_category_id` on the discussion topic, not the linked assignment."
+                    },
+                    "freeze_on_copy": {
+                        "type": "boolean",
+                        "description": "Indicates if assignment will be frozen when it is copied. NOTE: This field will only be present if the AssignmentFreezer plugin is available for your account."
+                    },
+                    "only_visible_to_overrides": {
+                        "type": "boolean",
+                        "description": "Indicates whether the assignment is only visible to overrides."
+                    },
+                    "post_to_sis": {
+                        "type": "boolean",
+                        "description": "Present if Sync Grades to Student Information System feature is enabled."
+                    },
+                    "moderated_grading": {
+                        "type": "boolean",
+                        "description": "Indicates if the assignment is moderated."
+                    },
+                    "grades_published_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "For assignments with moderated grading, a timestamp identifying when provisional grades were published."
+                    },
+                    "omit_from_final_grade": {
+                        "type": "boolean",
+                        "description": "If true, the assignment will be omitted from the student's final grade."
+                    },
+                    "intra_group_peer_reviews": {
+                        "type": "boolean",
+                        "description": "Indicates whether or not members from within the same group on a group assignment can be assigned to peer review their own group's work."
+                    },
+                    "vericite_enabled": {
+                        "type": "boolean",
+                        "description": "Flag indicating whether or not VeriCite has been enabled for the assignment. NOTE: This flag will not appear unless your account has the VeriCite plugin available."
+                    },
+                    "anonymous_instructor_annotations": {
+                        "type": "boolean",
+                        "description": "Flag indicating whether instructor annotations in document submissions for this assignment should be anonymous."
+                    },
+                    "duplicate_of_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "If the assignment is a duplicate, the ID of the original assignment."
+                    },
+                    "anonymous_grading": {
+                        "type": "boolean",
+                        "description": "Indicates if the assignment is graded anonymously. If true, graders cannot see student identities."
+                    },
+                    "graders_anonymous_to_graders": {
+                        "type": "boolean",
+                        "description": "Indicates if provisional graders' identities are hidden from other provisional graders. Only relevant for moderated assignments with grader_comments_visible_to_graders set to true."
+                    },
+                    "grader_count": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The maximum number of provisional graders who may issue grades for this assignment. Only relevant for moderated assignments. Must be a positive value, and must be set to 1 if the course has fewer than two active instructors. Otherwise, the maximum value is the number of active instructors in the course minus one, or 10 if the course has more than 11 active instructors."
+                    },
+                    "grader_comments_visible_to_graders": {
+                        "type": "boolean",
+                        "description": "Indicates if provisional graders' comments are visible to other provisional graders. Only relevant for moderated assignments."
+                    },
+                    "grader_section_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Graders for an assignment with anonymous moderated marking are assigned from this section if provided, or all sections otherwise."
+                    },
+                    "final_grader_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "User ID of the final grader."
+                    },
+                    "grader_names_visible_to_final_grader": {
+                        "type": "boolean",
+                        "description": "Indicates if provisional grader identities are visible to the final grader. Only relevant for moderated assignments."
+                    },
+                    "allowed_attempts": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The number of submission attempts a student can make for this assignment. -1 is considered unlimited."
+                    },
+                    "sis_source_id": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "ID for the correlated record for the assignment in the Student Information System. It can be NULL."
+                    },
+                    "annotatable_attachment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "For an `Annotated Document` type assignment, the ID of the annotatable attachment."
+                    },
+                    "important_dates": {
+                        "type": "boolean",
+                        "description": "Indicates if the assignment has important dates."
+                    },
+                    "description": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "The assignment description in an HTML fragment."
+                    },
+                    "position": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The sorting order of the assignment in the group."
+                    },
+                    "title": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Title of the assignment."
+                    },
+                    "turnitin_settings": {
+                        "type": "object",
+                        "properties": {
+                            "originality_report_visibility": {
+                                "type": "string",
+                                "enum": [
+                                    "__dap_unspecified__",
+                                    "immediate",
+                                    "after_grading",
+                                    "after_due_date",
+                                    "never"
+                                ],
+                                "description": "Allows to set the timeframe when the report will become visible."
+                            },
+                            "exclude_small_matches_type": {
+                                "type": "string",
+                                "enum": [
+                                    "__dap_unspecified__",
+                                    "off",
+                                    "words",
+                                    "percent"
+                                ],
+                                "description": "Exclude small sources from the Similarity Report by a set number of words or percentage."
+                            },
+                            "exclude_small_matches_value": {
+                                "type": "integer",
+                                "format": "int32",
+                                "description": "If exclude_small_matches_type is set to percent or number then the value will be will be a number (of words or a percent)."
+                            },
+                            "s_paper_check": {
+                                "type": "boolean",
+                                "description": "If set to TRUE, will allow to compare submission against other students' papers."
+                            },
+                            "s_view_report": {
+                                "type": "boolean",
+                                "description": "If set to TRUE students will be able to access their originality report."
+                            },
+                            "internet_check": {
+                                "type": "boolean",
+                                "description": "Select the content you'd like to compare papers against: current and archived website content."
+                            },
+                            "journal_check": {
+                                "type": "boolean",
+                                "description": "Select the content you'd like to compare papers against: periodicals, journals and publications."
+                            },
+                            "exclude_biblio": {
+                                "type": "boolean",
+                                "description": "Selecting this option will exclude text appearing in the bibliography, works cited, or references sections of student papers from being checked for matches when generating Similarity Reports."
+                            },
+                            "exclude_quoted": {
+                                "type": "boolean",
+                                "description": "Selecting this option will exclude text in student papers that is enclosed in quotation marks or is part of a block quotation (an indented block of text) from being checked for matches when generating Similarity Reports."
+                            },
+                            "submit_papers_to": {
+                                "type": "boolean",
+                                "description": "If set to FALSE, a similarity report will still be generated for paper submissions but students' papers will not be stored in the Turnitin standard paper repository or the institution's paper repository for future comparison."
+                            }
+                        },
+                        "additionalProperties": false,
+                        "description": "Miscellaneous settings for Turnitin."
+                    },
+                    "parent_assignment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Parent of assignment."
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Assignment",
+                            "SubAssignment"
+                        ],
+                        "description": "Type of assignment."
+                    },
+                    "has_sub_assignments": {
+                        "type": "boolean",
+                        "description": "Indicates if this assignment has sub assignments."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "workflow_state",
+                    "peer_reviews_assigned",
+                    "peer_reviews",
+                    "context_id",
+                    "context_type",
+                    "automatic_peer_reviews",
+                    "all_day",
+                    "could_be_locked",
+                    "grade_group_students_individually",
+                    "anonymous_peer_reviews",
+                    "turnitin_enabled",
+                    "freeze_on_copy",
+                    "only_visible_to_overrides",
+                    "post_to_sis",
+                    "moderated_grading",
+                    "omit_from_final_grade",
+                    "intra_group_peer_reviews",
+                    "vericite_enabled",
+                    "anonymous_instructor_annotations",
+                    "important_dates"
+                ],
+                "title": "This table stores attributes for assignments.",
+                "description": "There is one record in this table for each assignment."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 5
+}

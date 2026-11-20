@@ -1,0 +1,158 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for an lti result record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Represents a result from the IMS Assignment and Grade service",
+                "description": "See [IMS Global](https://www.imsglobal.org/spec/lti-ags/v2p0#result-service). LTI 1.3 tools that have been\nauthorized by an admin may read records from this table via API."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "extensions": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "Platform-specific extensions for the result."
+                    },
+                    "comment": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "Comment visible to the student about the result (LTI AGS)."
+                    },
+                    "submission_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "the ID of the associated submission."
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique ID of a user."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a `lti_results` record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a `lti_results` record was updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "active",
+                            "deleted"
+                        ],
+                        "description": "The workflow state of the result."
+                    },
+                    "result_score": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "The score given for the the student (LTI AGS)."
+                    },
+                    "result_maximum": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "The maximum score for the student (LTI AGS)."
+                    },
+                    "activity_progress": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "Indication to Canvas of the status of the user towards the activity's completion. Must be one of Initialized, Started, InProgress, Submitted, Completed (LTI AGS)."
+                    },
+                    "grading_progress": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "Indication to Canvas of the status of the grading process. A value of PendingManual will require intervention by a grader. Values of NotReady, Failed, and Pending will cause the scoreGiven to be ignored. FullyGraded values will require no action. Possible values are NotReady, Failed, Pending, PendingManual, FullyGraded (LTI AGS)."
+                    },
+                    "lti_line_item_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the associated line item."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "user_id",
+                    "created_at",
+                    "updated_at",
+                    "workflow_state",
+                    "lti_line_item_id"
+                ],
+                "title": "Represents a result from the IMS Assignment and Grade service",
+                "description": "See [IMS Global](https://www.imsglobal.org/spec/lti-ags/v2p0#result-service). LTI 1.3 tools that have been\nauthorized by an admin may read records from this table via API."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 2
+}

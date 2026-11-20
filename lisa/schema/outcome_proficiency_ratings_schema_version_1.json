@@ -1,0 +1,117 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for an outcome proficiency ratings record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Outcome proficiency ratings define the individual tiers of outcome proficiencies."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when an outcome_proficiency_ratings record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when an outcome_proficiency_ratings record was updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "active",
+                            "deleted"
+                        ],
+                        "description": "Workflow status of the outcome_proficiency_rating. Defaults to `active`."
+                    },
+                    "mastery": {
+                        "type": "boolean",
+                        "description": "Indicates the rating where mastery is first achieved."
+                    },
+                    "points": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "A non-negative number of points for the rating."
+                    },
+                    "outcome_proficiency_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Unique ID of proficiency collection to which this rating belongs."
+                    },
+                    "color": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "The hex color code of the rating."
+                    },
+                    "description": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The description of the rating."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "workflow_state",
+                    "mastery",
+                    "points",
+                    "outcome_proficiency_id",
+                    "color",
+                    "description"
+                ],
+                "title": "Outcome proficiency ratings define the individual tiers of outcome proficiencies."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 1
+}

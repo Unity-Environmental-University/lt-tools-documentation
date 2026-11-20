@@ -1,0 +1,123 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for the enrollment term."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Stores enrollment term records that describe the term or semester associated with courses (e.g. Fall 2013).",
+                "description": "Use the dates in this table as a proxy for the course start/end dates if the `start_at` and `end_at` fields in\nthe courses table are NULL."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The name of the term."
+                    },
+                    "integration_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The ID of the enrollment term in the external tools or SIS, this ID usually gets populated via API or SIS import."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when the enrollment term was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when the enrollment term was last updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "active",
+                            "deleted"
+                        ],
+                        "description": "Life-cycle state for the term."
+                    },
+                    "sis_batch_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for the SIS import. This field is only included if the user has permission to manage SIS information."
+                    },
+                    "start_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The datetime of the start of the term. Set up by the administrator. Enrollment term dates, course dates, and course section dates flow together in all aspects of Canvas; various dates allow different users to participate in the course. The hierarchy of dates are: course section dates override course dates, course dates override term dates."
+                    },
+                    "end_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The datetime of the end of the term. Set up by the administrator."
+                    },
+                    "sis_source_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The SIS ID of the term. Only included if the user has permission to view SIS information."
+                    },
+                    "term_code": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Enrollment term code as viewed in the UI."
+                    },
+                    "grading_period_group_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Identifies the grading period group."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "workflow_state"
+                ],
+                "title": "Stores enrollment term records that describe the term or semester associated with courses (e.g. Fall 2013).",
+                "description": "Use the dates in this table as a proxy for the course start/end dates if the `start_at` and `end_at` fields in\nthe courses table are NULL."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 1
+}

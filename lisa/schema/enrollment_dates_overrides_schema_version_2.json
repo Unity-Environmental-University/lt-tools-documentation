@@ -1,0 +1,111 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for an enrollment date override record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Supports allowing certain roles to have access to a term outside of term date boundaries."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a enrollment_dates_overrides record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when an enrollment_dates_overrides record was updated."
+                    },
+                    "context_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique ID of main Canvas account, always a root account ID in this table."
+                    },
+                    "context_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Account"
+                        ],
+                        "description": "The type of the object represented by context_id."
+                    },
+                    "start_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The start time of the enrollment."
+                    },
+                    "end_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The end datetime for the enrollment date override, if applicable."
+                    },
+                    "enrollment_term_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for the enrollment term."
+                    },
+                    "enrollment_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "DesignerEnrollment",
+                            "StudentEnrollment",
+                            "TaEnrollment",
+                            "TeacherEnrollment"
+                        ],
+                        "description": "The enrollment type. One of StudentEnrollment, TeacherEnrollment, TaEnrollment, DesignerEnrollment, ObserverEnrollment."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "context_id"
+                ],
+                "title": "Supports allowing certain roles to have access to a term outside of term date boundaries."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 2
+}

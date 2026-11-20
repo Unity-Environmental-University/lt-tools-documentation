@@ -1,0 +1,142 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for the section."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Stores attributes for a section of a course.",
+                "description": "Sections are a group of students that have been organized for administrative purposes.  When users are enrolled in\na course, they are actually enrolled in one of the sections of that course. It is possible to place more than one\nsection in course, but it is not possible to put sections within sections. All sections of a course share the same\ncontent. If a course is taught by one instructor, sections can remain under one course. However, if each section is\ntaught by a different instructor, those sections will need to be housed under separate courses. Each section can\nhave its own varied due dates for assignments, quizzes, and discussions. For example, a course may have sections\nthat meet on different days of the week or in different formats (online vs. face-to-face). Sections are also\nbeneficial when Teacher Assistants are assigned to help manage courses and oversee grading for a portion of\na course enrollment. As part of SIS or manual enrollments, you can limit students to only see students in their\nsection. Instructors can also limit students if you allow them to manually enroll users in their own courses."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The name of the section."
+                    },
+                    "course_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique Canvas identifier for the course in which the section belongs."
+                    },
+                    "integration_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The integration ID of the section. This field is only included if there is an integration set up between CanvaS and SIS."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp for when this section was entered into the system."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp for when the last time the section was updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "active",
+                            "deleted"
+                        ],
+                        "description": "Life-cycle state for the section."
+                    },
+                    "sis_batch_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for the SIS import if created through SIS."
+                    },
+                    "start_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The start date for the section, if applicable. When a user is allowed to participate in a course, enrollment term dates, course dates, and course section dates flow together in all aspects of Canvas. Various dates allow different users to participate in the course. The hierarchy of dates are: course section dates override course dates, course dates override term dates."
+                    },
+                    "end_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The end date for the section, if applicable. When a user is allowed to participate in a course."
+                    },
+                    "sis_source_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Id for the correlated record for the section in the SIS (assuming SIS integration has been properly configured)."
+                    },
+                    "default_section": {
+                        "type": "boolean",
+                        "description": "True if this is the default section."
+                    },
+                    "accepting_enrollments": {
+                        "type": "boolean",
+                        "description": "True if this section is open for enrollment."
+                    },
+                    "restrict_enrollments_to_section_dates": {
+                        "type": "boolean",
+                        "description": "Restrict user enrollments to the start and end dates of the section. True when \"Users can only participate in the course between these dates\" is checked."
+                    },
+                    "nonxlist_course_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier of the original course of a cross-listed section."
+                    },
+                    "enrollment_term_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Identifies the associated enrollment term."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "name",
+                    "course_id",
+                    "created_at",
+                    "updated_at",
+                    "workflow_state"
+                ],
+                "title": "Stores attributes for a section of a course.",
+                "description": "Sections are a group of students that have been organized for administrative purposes.  When users are enrolled in\na course, they are actually enrolled in one of the sections of that course. It is possible to place more than one\nsection in course, but it is not possible to put sections within sections. All sections of a course share the same\ncontent. If a course is taught by one instructor, sections can remain under one course. However, if each section is\ntaught by a different instructor, those sections will need to be housed under separate courses. Each section can\nhave its own varied due dates for assignments, quizzes, and discussions. For example, a course may have sections\nthat meet on different days of the week or in different formats (online vs. face-to-face). Sections are also\nbeneficial when Teacher Assistants are assigned to help manage courses and oversee grading for a portion of\na course enrollment. As part of SIS or manual enrollments, you can limit students to only see students in their\nsection. Instructors can also limit students if you allow them to manually enroll users in their own courses."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 1
+}

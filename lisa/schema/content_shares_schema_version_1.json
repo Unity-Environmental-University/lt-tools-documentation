@@ -1,0 +1,116 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier of a content share."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Provides a link to a content export from a sender to a receiver.",
+                "description": "The receiver can use this link to import the content export into any of their courses."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Name of the content item being shared."
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "SentContentShare",
+                            "ReceivedContentShare"
+                        ],
+                        "description": "Type of content share."
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the user who owns the content share."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp showing when a `content_share` record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp showing when a `content_share` record was updated."
+                    },
+                    "content_export_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the ContentExport containing the content of the share."
+                    },
+                    "sender_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the user who sent the content share. Only populated for ReceivedContentShare."
+                    },
+                    "read_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "read",
+                            "unread"
+                        ],
+                        "description": "State of the content shared."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "name",
+                    "type",
+                    "user_id",
+                    "created_at",
+                    "updated_at",
+                    "content_export_id",
+                    "read_state"
+                ],
+                "title": "Provides a link to a content export from a sender to a receiver.",
+                "description": "The receiver can use this link to import the content export into any of their courses."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 1
+}

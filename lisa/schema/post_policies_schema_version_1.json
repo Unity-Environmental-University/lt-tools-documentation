@@ -1,0 +1,86 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for a post policy record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Contains post policy configurations for courses and individual assignments."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "course_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the course referenced by this policy. Note that this is always set even if the policy refers to a specific assignment within a course."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a `post_policies` record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a `post_policies` record was updated."
+                    },
+                    "assignment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the assignment referenced by this policy, or NULL if the policy refers to a course at large."
+                    },
+                    "post_manually": {
+                        "type": "boolean",
+                        "description": "For post policies associated with an assignment, whether submissions receiving grades or comments should be posted to the student automatically. For post policies associated with a course, this value will be applied by default to assignments created in the course."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "post_manually"
+                ],
+                "title": "Contains post policy configurations for courses and individual assignments."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 1
+}

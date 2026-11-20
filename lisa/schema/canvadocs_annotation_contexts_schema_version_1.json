@@ -1,0 +1,101 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of this record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Launch context associated with DocViewer when assignment is of type `Annotated_Document`."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "When this record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "When this record was last updated."
+                    },
+                    "attachment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The attachment that this DocViewer launch is owned by."
+                    },
+                    "submission_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The submission this DocViewer launch is associated with."
+                    },
+                    "launch_id": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "The ID that differentiates a DocViewer launch from another using the same attachment."
+                    },
+                    "submission_attempt": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The submission attempt associated with the launch_id."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "attachment_id",
+                    "submission_id",
+                    "launch_id"
+                ],
+                "title": "Launch context associated with DocViewer when assignment is of type `Annotated_Document`."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 1
+}

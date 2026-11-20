@@ -1,0 +1,160 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for an lti line item record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Represents a line item from the IMS Assignment and Grade service.",
+                "description": "LTI 1.3 tools that have been authorized by an admin may manage this table.\n\nSee [Learning Tools Interoperability (LTI) Assignment and Grade Services\nSpecification](https://www.imsglobal.org/spec/lti-ags/v2p0#line-item-service)."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a lti_line_items record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a lti_line_items record was updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "active",
+                            "deleted"
+                        ],
+                        "description": "The workflow state of the line item."
+                    },
+                    "assignment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the assignment associated with the line item."
+                    },
+                    "client_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The client ID used to create the line item (developer key global id)."
+                    },
+                    "coupled": {
+                        "type": "boolean",
+                        "description": "True if the line item is the default one created when a user created an assignment; false if the line item was created via the API (regardless if it is the default line item or not)."
+                    },
+                    "score_maximum": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "The maximum score for the line item."
+                    },
+                    "resource_id": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "A Tool Provider specified ID for the Line Item. Multiple line items may share the same resourceId within a given context."
+                    },
+                    "lti_resource_link_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The resource link ID associated with the line item. This ID matches the associated assignments \"lti_context_id\"."
+                    },
+                    "label": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "The label of the line item."
+                    },
+                    "extensions": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "Contains canvas-specific line item extensions. For example: submission_type."
+                    },
+                    "tag": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "A value used to qualify a line Item beyond its ids. Line Items may be queried by this value in the List endpoint. Multiple line items can share the same tag within a given context."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "workflow_state",
+                    "assignment_id",
+                    "client_id",
+                    "coupled",
+                    "score_maximum",
+                    "label"
+                ],
+                "title": "Represents a line item from the IMS Assignment and Grade service.",
+                "description": "LTI 1.3 tools that have been authorized by an admin may manage this table.\n\nSee [Learning Tools Interoperability (LTI) Assignment and Grade Services\nSpecification](https://www.imsglobal.org/spec/lti-ags/v2p0#line-item-service)."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 2
+}

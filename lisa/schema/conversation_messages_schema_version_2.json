@@ -1,0 +1,186 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for a conversation message record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "The messages that belong to a certain Conversation, these are in the *Inbox*."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a `conversation_messages` record was created."
+                    },
+                    "context_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for the context of `conversation_messages` (account, course, user)."
+                    },
+                    "context_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Account"
+                        ],
+                        "description": "The type of the object represented by `context_id`, typically `Course` or `Account` or `User`."
+                    },
+                    "conversation_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for the conversation."
+                    },
+                    "author_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "User ID of the author of the message."
+                    },
+                    "generated": {
+                        "type": "boolean",
+                        "description": "This attribute is true if the system generated this message (e.g. \"John was added to this conversation\")."
+                    },
+                    "forwarded_message_ids": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "The IDs of any messages that were created as a forward of the current message."
+                    },
+                    "media_comment_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Media comment ID of an audio of video file to be associated with this message."
+                    },
+                    "media_comment_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "audio",
+                            "audio/*",
+                            "video",
+                            "video/*",
+                            "audio/aac",
+                            "audio/amr",
+                            "audio/flac",
+                            "audio/mp4",
+                            "audio/mpeg",
+                            "audio/ogg",
+                            "audio/vnd.dlna.adts",
+                            "audio/wav",
+                            "audio/webm",
+                            "audio/x-m4a",
+                            "audio/x-ms-wma",
+                            "audio/x-wav",
+                            "video/3gpp",
+                            "video/avi",
+                            "video/mp4",
+                            "video/mpeg",
+                            "video/ogg",
+                            "video/quicktime",
+                            "video/webm",
+                            "video/x-m4v",
+                            "video/x-matroska",
+                            "video/x-ms-asf",
+                            "video/x-ms-wmv",
+                            "video/x-msvideo"
+                        ],
+                        "description": "Type of the associated media file."
+                    },
+                    "asset_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of an attached asset, such as a submission."
+                    },
+                    "asset_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Submission"
+                        ],
+                        "description": "The type of an attached asset."
+                    },
+                    "attachment_ids": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "Comma-separated list of attachments ids. These must be files that have been previously uploaded to the sender's \"conversation attachments\" folder."
+                    },
+                    "has_attachments": {
+                        "type": "boolean",
+                        "description": "True if the message has attachments."
+                    },
+                    "has_media_objects": {
+                        "type": "boolean",
+                        "description": "True if the message has media objects."
+                    },
+                    "body": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "The HTML content of the message."
+                    }
+                },
+                "additionalProperties": false,
+                "title": "The messages that belong to a certain Conversation, these are in the *Inbox*."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 2
+}

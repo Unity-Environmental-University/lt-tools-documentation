@@ -1,0 +1,164 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the Account object."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Stores data about account objects in the Canvas system.",
+                "description": "Accounts are most often used to represent a hierarchy of colleges, schools, departments, campuses."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The display name of the account."
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when the account was deleted. Will only ever be NULL for end customers."
+                    },
+                    "parent_account_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The account's parent ID, or NULL if this is the root account."
+                    },
+                    "current_sis_batch_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the currently processing SIS (Student Information System) batch (if submitted via UI, not API)."
+                    },
+                    "storage_quota": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The storage quote for the account, in megabytes."
+                    },
+                    "default_storage_quota": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The storage quota for children accounts in megabytes, if not otherwise specified."
+                    },
+                    "default_locale": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Language for the account."
+                    },
+                    "default_user_storage_quota": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The default storage quota for users in the account in megabytes, if not otherwise specified."
+                    },
+                    "default_group_storage_quota": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The storage quota for a group in the account in megabytes, if not otherwise specified."
+                    },
+                    "integration_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The account's identifier in the Student Information System."
+                    },
+                    "lti_context_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "UUID of the Canvas context in LTI standard. Secondary ID for this context, could be used in API to identify resource as well."
+                    },
+                    "consortium_parent_account_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The root account of the consortium account, if this root account is part of a consortium."
+                    },
+                    "course_template_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The course selected as a template for new courses created in this account. 0 if a template should not be used, nor inherited."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when the account was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when the account was updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "active",
+                            "deleted",
+                            "suspended"
+                        ],
+                        "description": "Life-cycle state for account."
+                    },
+                    "default_time_zone": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The default time zone of the account. Allowed time zones are [IANA time zones](https://www.iana.org/time-zones) or friendlier [Ruby on Rails time zones](https://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html)."
+                    },
+                    "uuid": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The UUID of the account."
+                    },
+                    "sis_source_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Correlated id for the record for this course in the SIS system (assuming SIS integration is configured)"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "workflow_state"
+                ],
+                "title": "Stores data about account objects in the Canvas system.",
+                "description": "Accounts are most often used to represent a hierarchy of colleges, schools, departments, campuses."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 2
+}

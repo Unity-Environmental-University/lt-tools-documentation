@@ -1,0 +1,108 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "enrollment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the enrollment."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "enrollment_id"
+                ],
+                "title": "Stores the state of an enrollment."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when an `enrollment_states` record was updated."
+                    },
+                    "state_is_current": {
+                        "type": "boolean",
+                        "description": "Indicates if the enrollment state is current or needs recalculation."
+                    },
+                    "state_started_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Indicates the date that the enrollment state should take effect."
+                    },
+                    "state_valid_until": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Indicates the date that the enrollment state becomes stale."
+                    },
+                    "restricted_access": {
+                        "type": "boolean",
+                        "description": "Indicates if the enrollment is allowed to view the course."
+                    },
+                    "access_is_current": {
+                        "type": "boolean",
+                        "description": "Indicates if the state is within the start and valid until bounds."
+                    },
+                    "state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "active",
+                            "invited",
+                            "creation_pending",
+                            "deleted",
+                            "rejected",
+                            "completed",
+                            "inactive",
+                            "current_and_invited",
+                            "current_and_future",
+                            "current_and_concluded",
+                            "pending_active",
+                            "pending_invited"
+                        ],
+                        "description": "State of the user enrollment."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "state_is_current",
+                    "restricted_access",
+                    "access_is_current"
+                ],
+                "title": "Stores the state of an enrollment."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 1
+}

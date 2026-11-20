@@ -1,0 +1,196 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the quiz submission."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Stores attributes for the last submitted quiz.",
+                "description": "This tables persists one record per `user_id` and `quiz_id`."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "submission_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the Submission the quiz submission represents."
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the Student that made the quiz submission."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Time when the quiz submission was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Time when the quiz submission was last updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "complete",
+                            "pending_review",
+                            "preview",
+                            "settings_only",
+                            "untaken"
+                        ],
+                        "description": "Life-cycle state for the quiz submission."
+                    },
+                    "quiz_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the Quiz the quiz submission belongs to."
+                    },
+                    "quiz_version": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The version of the quiz this submission is related to."
+                    },
+                    "started_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The time at which the student started the quiz submission."
+                    },
+                    "finished_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The time at which the student submitted the quiz submission."
+                    },
+                    "end_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The time at which the quiz submission will be overdue, and be flagged as a late submission."
+                    },
+                    "score": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "The score of the quiz submission, if graded."
+                    },
+                    "attempt": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "For quizzes that allow multiple attempts, this field specifies the quiz submission attempt number."
+                    },
+                    "submission_data": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "Student answers to quiz, it shares JSON array of answers for only graded quiz submissions, it has NULL if quiz hasn't been graded yet. Contains the `question_id`, whether the question was answered correctly, the `answer_id` and answer text."
+                    },
+                    "kept_score": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "For quizzes that allow multiple attempts, this is the score that will be used, which might be the score of the latest, or the highest, quiz submission."
+                    },
+                    "fudge_points": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "Number of points the quiz submissions score was fudged by."
+                    },
+                    "quiz_points_possible": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "The amount of points possible for the quiz."
+                    },
+                    "extra_attempts": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Number of times the student was allowed to retake the quiz over the multiple-attempt limit."
+                    },
+                    "temporary_user_code": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Construct for previewing a quiz."
+                    },
+                    "extra_time": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Amount of extra time allowed for the quiz submission, in minutes."
+                    },
+                    "manually_scored": {
+                        "type": "boolean",
+                        "description": "Indicates if this submission was graded by the teacher."
+                    },
+                    "manually_unlocked": {
+                        "type": "boolean",
+                        "description": "The student can take the quiz even if it's locked for everyone else."
+                    },
+                    "was_preview": {
+                        "type": "boolean",
+                        "description": "Indicates if this submission was created from a teacher preview."
+                    },
+                    "score_before_regrade": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "The original score of the quiz submission prior to any re-grading."
+                    },
+                    "has_seen_results": {
+                        "type": "boolean",
+                        "description": "Whether the student has viewed their results to the quiz."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "workflow_state",
+                    "quiz_id",
+                    "fudge_points"
+                ],
+                "title": "Stores attributes for the last submitted quiz.",
+                "description": "This tables persists one record per `user_id` and `quiz_id`."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 1
+}

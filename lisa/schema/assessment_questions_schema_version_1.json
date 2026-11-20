@@ -1,0 +1,125 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for the Assessment Question."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Stores attributes of a question associated with a quiz.",
+                "description": "The column `question_data` stores a variety of question data related points such as:\n  * `question_type` denotes the type of the question. Possible values are:\n      - `calculated_question`\n      - `essay_question`\n      - `file_upload_question`\n      - `fill_in_multiple_blanks_question`\n      - `matching_question`\n      - `multiple_answers_question`\n      - `multiple_choice_question`\n      - `multiple_dropdowns_question`\n      - `numerical_question`\n      - `short_answer_question`\n      - `text_only_question`\n      - `true_false_question`\n  * `question_text` is the text of the question.\n  * `regrade_option` denotes if regrading is available for the question. Possible values are: `available`\n    and `unavailable` for question types `multiple_answers_question`, `multiple_choice_question`,\n    `true_false_question`, and NULL for others. Defaults to `available` for the allowed question types, and NULL\n    for the rest.\n  * `correct_comments` are comments to be displayed if the student answers the question correctly.\n  * `incorrect_comments` are comments to be displayed if the student answers the question incorrectly.\n  * `neutral_comments` are comments to be displayed regardless of how the student answers the question.\n  * `answers` is a JSON array of all possible answers."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "Name of the question."
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The time the question was deleted. If the question has not been deleted the value will be NULL."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Time when the quiz question was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Time when the quiz question was last updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "active",
+                            "independently_edited",
+                            "deleted"
+                        ],
+                        "description": "Life-cycle state for the quiz question."
+                    },
+                    "context_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for the question bank's context (account or course). No longer used as Canvas delegates to `context_id` of the associated AssessmentQuestion."
+                    },
+                    "context_type": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The type of context the question bank is associated with. No longer used as Canvas delegates to the context of the associated AssessmentQuestion."
+                    },
+                    "question_data": {
+                        "type": "string",
+                        "description": "A variety of question data related points."
+                    },
+                    "assessment_question_bank_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for the assessment question bank this question is associated with."
+                    },
+                    "migration_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The unique identifier of the migration that imported this assessment question."
+                    },
+                    "position": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The position of the question."
+                    }
+                },
+                "additionalProperties": false,
+                "title": "Stores attributes of a question associated with a quiz.",
+                "description": "The column `question_data` stores a variety of question data related points such as:\n  * `question_type` denotes the type of the question. Possible values are:\n      - `calculated_question`\n      - `essay_question`\n      - `file_upload_question`\n      - `fill_in_multiple_blanks_question`\n      - `matching_question`\n      - `multiple_answers_question`\n      - `multiple_choice_question`\n      - `multiple_dropdowns_question`\n      - `numerical_question`\n      - `short_answer_question`\n      - `text_only_question`\n      - `true_false_question`\n  * `question_text` is the text of the question.\n  * `regrade_option` denotes if regrading is available for the question. Possible values are: `available`\n    and `unavailable` for question types `multiple_answers_question`, `multiple_choice_question`,\n    `true_false_question`, and NULL for others. Defaults to `available` for the allowed question types, and NULL\n    for the rest.\n  * `correct_comments` are comments to be displayed if the student answers the question correctly.\n  * `incorrect_comments` are comments to be displayed if the student answers the question incorrectly.\n  * `neutral_comments` are comments to be displayed regardless of how the student answers the question.\n  * `answers` is a JSON array of all possible answers."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 1
+}

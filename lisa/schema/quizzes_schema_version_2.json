@@ -1,0 +1,284 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "the ID of the quiz."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Stores attributes for quizzes.",
+                "description": "Quizzes can also be assignments (`assignment_id` field will have a value)."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the quiz was deleted."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Time when the quiz was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Time when the quiz was last updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "created",
+                            "edited",
+                            "unpublished",
+                            "deleted",
+                            "available"
+                        ],
+                        "description": "Denotes where the quiz is in the workflow. Possible values are `unpublished`, `published` and `deleted`. Defaults to `unpublished`."
+                    },
+                    "due_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "when the quiz is due."
+                    },
+                    "unlock_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "when to unlock the quiz."
+                    },
+                    "lock_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "when to lock the quiz."
+                    },
+                    "points_possible": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "The total point value given to the quiz."
+                    },
+                    "assignment_group_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "the ID of the quizzes assignment group."
+                    },
+                    "context_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the context (account or course) this group belongs too. See also: `context_type`."
+                    },
+                    "context_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Course"
+                        ],
+                        "description": "The type of the context object (typically `Course`)."
+                    },
+                    "assignment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Identifies the assignment the quiz belongs to (NULL if not an assignment)."
+                    },
+                    "could_be_locked": {
+                        "type": "boolean",
+                        "description": "Dictates if the quiz can be locked or not. Possible values are `allow_locking` and `disallow_locking`. Defaults to `disallow_locking`."
+                    },
+                    "migration_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The unique identifier of the migration that imported the quiz."
+                    },
+                    "only_visible_to_overrides": {
+                        "type": "boolean",
+                        "description": "This indicates the quiz is not visible to everyone in the course, but only to those with an override."
+                    },
+                    "allowed_attempts": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "how many times a student can take the quiz -1 = unlimited attempts."
+                    },
+                    "published_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "whether the quiz has a published or unpublished draft state."
+                    },
+                    "shuffle_answers": {
+                        "type": "boolean",
+                        "description": "shuffle answers for students."
+                    },
+                    "show_correct_answers": {
+                        "type": "boolean",
+                        "description": "show which answers were correct when results are shown? only valid if `hide_results` is NULL."
+                    },
+                    "time_limit": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "quiz time limit in minutes."
+                    },
+                    "scoring_policy": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "which quiz score to keep (only if `allowed_attempts` != 1) possible values: `keep_highest`, `keep_latest`."
+                    },
+                    "quiz_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "assignment",
+                            "practice_quiz",
+                            "graded_survey",
+                            "survey"
+                        ],
+                        "description": "type of quiz."
+                    },
+                    "access_code": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "access code to restrict quiz access."
+                    },
+                    "question_count": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "the number of questions in the quiz."
+                    },
+                    "anonymous_submissions": {
+                        "type": "boolean",
+                        "description": "Dictates whether students are allowed to submit the quiz anonymously."
+                    },
+                    "hide_results": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "let students see their quiz responses? possible values: NULL, `always`, `until_after_last_attempt`."
+                    },
+                    "ip_filter": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "IP address or range that quiz access is limited to."
+                    },
+                    "require_lockdown_browser": {
+                        "type": "boolean",
+                        "description": "Dictates whether the browser has locked-down when the quiz is being taken. Possible values are `required` and `not_required`. Defaults to `not_required`."
+                    },
+                    "require_lockdown_browser_for_results": {
+                        "type": "boolean",
+                        "description": "Dictates whether the browser has to be locked-down to display the results. Is valid only if `hide_results` is set to `never` or `until_after_last_attempt` (for the results to be displayed after the last attempt). Possible values are `required` and `not_required`. Defaults to `not_required`."
+                    },
+                    "one_question_at_a_time": {
+                        "type": "boolean",
+                        "description": "show one question at a time?"
+                    },
+                    "cant_go_back": {
+                        "type": "boolean",
+                        "description": "lock questions after answering? only valid if `one_question_at_a_time` is true."
+                    },
+                    "show_correct_answers_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "when should the correct answers be visible by students? only valid if `show_correct_answers` is true."
+                    },
+                    "hide_correct_answers_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "prevent the students from seeing correct answers after the specified date has passed. only valid if `show_correct_answers` is true."
+                    },
+                    "require_lockdown_browser_monitor": {
+                        "type": "boolean",
+                        "description": "Dictates whether a browser lockdown monitor is required. Possible values are `required` and `not_required`. Defaults to `not_required`."
+                    },
+                    "one_time_results": {
+                        "type": "boolean",
+                        "description": "prevent the students from seeing their results more than once (right after they submit the quiz)."
+                    },
+                    "show_correct_answers_last_attempt": {
+                        "type": "boolean",
+                        "description": "restrict the show_correct_answers option above to apply only to the last submitted attempt of a quiz that allows multiple attempts. only valid if `show_correct_answers` is true and `allowed_attempts` > 1."
+                    },
+                    "unpublished_question_count": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The number of questions that have not been published."
+                    },
+                    "description": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "the description of the quiz."
+                    },
+                    "title": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "the title of the quiz."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "workflow_state",
+                    "context_id",
+                    "context_type",
+                    "could_be_locked",
+                    "only_visible_to_overrides",
+                    "shuffle_answers",
+                    "show_correct_answers",
+                    "anonymous_submissions",
+                    "require_lockdown_browser",
+                    "require_lockdown_browser_for_results",
+                    "one_question_at_a_time",
+                    "cant_go_back",
+                    "require_lockdown_browser_monitor",
+                    "one_time_results",
+                    "show_correct_answers_last_attempt"
+                ],
+                "title": "Stores attributes for quizzes.",
+                "description": "Quizzes can also be assignments (`assignment_id` field will have a value)."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 2
+}

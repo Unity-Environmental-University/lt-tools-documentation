@@ -1,0 +1,206 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the group."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Stores attributes for groups in canvas.",
+                "description": "Groups contain two or more students enrolled in a particular course working on an assignment or project together."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The display name of the group."
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the group was deleted."
+                    },
+                    "storage_quota": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The storage quota for the group."
+                    },
+                    "lti_context_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "UUID of the Canvas context in LTI standard. secondary ID for this context, could be used in API to identify resource as well."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the group was first saved in the system."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the group was last updated in the system."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "available",
+                            "deleted",
+                            "active"
+                        ],
+                        "description": "Life-cycle state for the group."
+                    },
+                    "account_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Identifies the associated account, groups could be owned by sub-accounts."
+                    },
+                    "sis_batch_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the SIS import if created through SIS."
+                    },
+                    "context_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the context (account or course) this group belongs too. See also: context_type."
+                    },
+                    "context_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Account",
+                            "Course"
+                        ],
+                        "description": "The course or account that the group belongs to. The pattern here is that whatever the `context_type` is, there will be an `_id` field named after that type. So if instead `context_type` was `account`, the `course_id` field would be replaced by an `account_id` field."
+                    },
+                    "migration_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The unique identifier of the migration that imported this group."
+                    },
+                    "group_category_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the group's category."
+                    },
+                    "sis_source_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The SIS ID of the group."
+                    },
+                    "is_public": {
+                        "type": "boolean",
+                        "description": "Whether or not the group is public. Currently only community groups can be made public. Also, once a group has been set to public, it cannot be changed back to private."
+                    },
+                    "wiki_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of an associated wiki page."
+                    },
+                    "max_membership": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The maximum number of participating users in the group."
+                    },
+                    "join_level": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "How people are allowed to join the group. For all groups except for community groups, the user must share the group's parent course or account. For student organized or community groups, where a user can be a member of as many or few as they want, the applicable levels are `parent_context_auto_join`, `parent_context_request`, and `invitation_only`. For class groups, where students are divided up and should only be part of one group of the category, this value will always be `invitation_only`, and is not relevant. If `parent_context_auto_join`, anyone can join and will be automatically accepted. If `parent_context_request`, anyone can request to join, which must be approved by a group moderator. If `invitation_only`, only those how have received an invitation my join the group, by accepting that invitation."
+                    },
+                    "avatar_attachment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Foreign key to the `attachments` table for the avatar of this group."
+                    },
+                    "leader_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Foreign key to the `users` table for the leader of this group."
+                    },
+                    "description": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "A description of the group."
+                    },
+                    "uuid": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The UUID of the group."
+                    },
+                    "default_view": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "feed"
+                        ],
+                        "description": "Default view for groups is the feed."
+                    },
+                    "non_collaborative": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Whether or not is collaborative."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "workflow_state",
+                    "account_id",
+                    "context_id",
+                    "context_type",
+                    "uuid"
+                ],
+                "title": "Stores attributes for groups in canvas.",
+                "description": "Groups contain two or more students enrolled in a particular course working on an assignment or project together."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 3
+}

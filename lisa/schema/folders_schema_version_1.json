@@ -1,0 +1,169 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for a folder record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "A collection of files (attachments)."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Name of the folder."
+                    },
+                    "full_name": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "Full path of the folder."
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when this record was deleted. If the record has not been deleted the value will be NULL."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a folders record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a folders record was updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "active",
+                            "deleted",
+                            "hidden",
+                            "private",
+                            "visible"
+                        ],
+                        "description": "In this context the workflow state indicates the visibility of the folder."
+                    },
+                    "unlock_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Indicates the date at which this folder should become accessible."
+                    },
+                    "lock_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Indicates the date at which this folder should no longer be accessible."
+                    },
+                    "context_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for the folders's context (account, course, user)."
+                    },
+                    "context_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Account",
+                            "Course",
+                            "Group",
+                            "User"
+                        ],
+                        "description": "The type of the object represented by context_id."
+                    },
+                    "locked": {
+                        "type": "boolean",
+                        "description": "Indicates if the folder is currently accessible [NULL=false]."
+                    },
+                    "cloned_item_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Unique identifier of the folder that this folder was cloned from."
+                    },
+                    "submission_context_code": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "A value indicating the context to which this folder should be submitted if it is for a submission."
+                    },
+                    "parent_folder_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Id of the parent folder."
+                    },
+                    "unique_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "media",
+                            "student annotation documents",
+                            "icon maker icons",
+                            "buttons and icons"
+                        ],
+                        "description": "Value indicating what kind of files are stored in this folder. NULL is the most common value, meaning this is a standard folder. `media` is a special case where media files are stored."
+                    },
+                    "position": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "An integer value used for sorting the order in which the folder is listed."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "workflow_state",
+                    "context_id",
+                    "context_type"
+                ],
+                "title": "A collection of files (attachments)."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 1
+}

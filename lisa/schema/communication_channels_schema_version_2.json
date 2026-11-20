@@ -1,0 +1,128 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for a user communication channel record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Channels through which a user receives Canvas notifications.",
+                "description": "Examples include an email address, a phone number, a mobile device token for push notifications, etc."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The address of the communication channel e.g. an email address or a phone number."
+                    },
+                    "path_type": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The type of communication channel being described. This field determines the type of value seen in `address`."
+                    },
+                    "pseudonym_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique ID of a user's pseudonym record."
+                    },
+                    "bounce_count": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The number of times a communication channel has bounced when trying to deliver messages."
+                    },
+                    "confirmation_code_expires_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The date-time when the issued confirmation code will expire."
+                    },
+                    "confirmation_sent_count": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The number of confirmations sent for the channel."
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique ID of a user."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a `communication_channels` record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a `communication_channels` record was updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "unconfirmed",
+                            "active",
+                            "retired"
+                        ],
+                        "description": "Current state of the communication channel."
+                    },
+                    "position": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The position of this communication channel relative to the user's other channels when they are ordered."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "path",
+                    "path_type",
+                    "confirmation_sent_count",
+                    "user_id",
+                    "created_at",
+                    "updated_at",
+                    "workflow_state"
+                ],
+                "title": "Channels through which a user receives Canvas notifications.",
+                "description": "Examples include an email address, a phone number, a mobile device token for push notifications, etc."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 2
+}

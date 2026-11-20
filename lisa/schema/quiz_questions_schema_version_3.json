@@ -1,0 +1,172 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the quiz question."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "This table stores attributes of a question associated with a quiz."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Time when the quiz question was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Time when the quiz question was last updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "active",
+                            "deleted",
+                            "generated"
+                        ],
+                        "description": "Life-cycle state for the quiz question."
+                    },
+                    "quiz_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the Quiz the question belongs to."
+                    },
+                    "migration_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The unique identifier of the migration that imported the quiz question."
+                    },
+                    "quiz_group_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Identifies the quiz group."
+                    },
+                    "assessment_question_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Identifies the assessment question."
+                    },
+                    "assessment_question_version": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Version of the assessment question associated with the quiz question."
+                    },
+                    "position": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The order in which the question will be retrieved and displayed."
+                    },
+                    "question_data": {
+                        "type": "object",
+                        "properties": {
+                            "neutral_comments": {
+                                "type": "string",
+                                "description": "Comments to be displayed regardless of how the student answers the question."
+                            },
+                            "answers": {
+                                "type": "string",
+                                "description": "Collection of possible answers."
+                            },
+                            "name": {
+                                "type": "string",
+                                "description": "Name of the question."
+                            },
+                            "question_type": {
+                                "type": "string",
+                                "description": "Denotes the type of the question."
+                            },
+                            "question_text": {
+                                "type": "string",
+                                "description": "Text of the question."
+                            },
+                            "regrade_option": {
+                                "type": "string",
+                                "enum": [
+                                    "__dap_unspecified__",
+                                    "available",
+                                    "unavailable",
+                                    "multiple_answers_question",
+                                    "multiple_choice_question",
+                                    "true_false_question",
+                                    "current_and_previous_correct",
+                                    "no_regrade",
+                                    "current_correct_only",
+                                    "full_credit",
+                                    "disabled"
+                                ],
+                                "description": "Denotes if regrading is available for the question. Possible values are `available` and `unavailable` for question types. Defaults to `available` for the allowed question types and NULL for the rest."
+                            },
+                            "correct_comments": {
+                                "type": "string",
+                                "description": "Comments to be displayed if the student answers the question correctly."
+                            },
+                            "incorrect_comments": {
+                                "type": "string",
+                                "description": "Comments to be displayed if the student answers the question incorrectly."
+                            },
+                            "text_after_answers": {
+                                "type": "string",
+                                "description": "(Used in *short_answer_question*, also known as *fill_in_the_blank*. Omitted for other question types.) Text following the missing word."
+                            },
+                            "matching_answer_incorrect_matches": {
+                                "type": "string",
+                                "description": "(Used in *matching_question*. Omitted for other question types.) List of distractors (incorrect answers), delimited by new lines, that will be seeded with all the *answer_match_right* values."
+                            },
+                            "points_possible": {
+                                "type": "number",
+                                "format": "float64",
+                                "description": "Maximum number of points that can be awarded for answering the question correctly."
+                            }
+                        },
+                        "additionalProperties": false,
+                        "description": "Question data."
+                    }
+                },
+                "additionalProperties": false,
+                "title": "This table stores attributes of a question associated with a quiz."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 3
+}

@@ -1,0 +1,382 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Primary key for this record in the `context_external_tools` table in the Canvas database."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Stores data about installed LTI 1 and 1.3 tools."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "developer_key_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The client ID of the tool provider. LTI 1.3 only."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the activation was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The time at which the tool was last updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "anonymous",
+                            "deleted",
+                            "disabled",
+                            "email_only",
+                            "name_only",
+                            "public"
+                        ],
+                        "description": "Workflow state for activation (active, deleted)."
+                    },
+                    "context_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the context the tool is deployed to. Identifies either a course (`courses`.`id` if `context_type` is `Course`) or an account (`accounts`.`id` if `context_type` is `Account`)."
+                    },
+                    "context_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Account",
+                            "Course"
+                        ],
+                        "description": "The type of object the tool was activated in."
+                    },
+                    "migration_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The unique identifier of the migration that imported the tool."
+                    },
+                    "consumer_key": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "A key used by the tool for validation at launch time. This value is set by the Canvas user who installs the tool."
+                    },
+                    "cloned_item_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The Id of the item in which this context_external_tool was cloned from."
+                    },
+                    "tool_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The tool ID received from the external tool. May be missing if the tool does not send an ID."
+                    },
+                    "not_selectable": {
+                        "type": "boolean",
+                        "description": "true - tool is selectable in all scenarios. false - not selectable for assignment or module selection menu."
+                    },
+                    "app_center_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The tool ID from eduappcenter.com."
+                    },
+                    "allow_membership_service_access": {
+                        "type": "boolean",
+                        "description": "Indicates that the tool has access to the legacy membership service. LTI 1 only. This setting is set by the Canvas user who installs the tool."
+                    },
+                    "description": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "The description of the tool activation as entered by the user."
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The name of tool activation as entered by the user."
+                    },
+                    "domain": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The domain for the tool launch URL (optional field). Canvas uses this domain to lookup the correct tool to launch when the tool ID is unknown."
+                    },
+                    "url": {
+                        "type": "string",
+                        "maxLength": 4096,
+                        "description": "The URL to where the tool may launch to (if this value is NULL, use the `domain` field)."
+                    },
+                    "settings": {
+                        "type": "object",
+                        "properties": {
+                            "course_home_sub_navigation": {
+                                "type": "string",
+                                "description": "Course home sub navigation placement type."
+                            },
+                            "course_settings_sub_navigation": {
+                                "type": "string",
+                                "description": "Course settings sub navigation placement type."
+                            },
+                            "custom_fields": {
+                                "type": "string",
+                                "description": "Custom parameters provider request to share on every single LTI launch, each placement column might have its own set of custom_fields."
+                            },
+                            "discussion_menu": {
+                                "type": "string",
+                                "description": "Discussion menu placement type."
+                            },
+                            "discussion_topic_index_menu": {
+                                "type": "string",
+                                "description": "Discussion topic index menu placement type."
+                            },
+                            "discussion_topic_menu": {
+                                "type": "string",
+                                "description": "Discussion topic menu placement type."
+                            },
+                            "editor_button": {
+                                "type": "string",
+                                "description": "RCE placement type."
+                            },
+                            "enabled": {
+                                "type": "string",
+                                "description": "Controls if the tool is disabled for user to click on, typically tool gets removed altogether but sometimes provider uses this setting to just disable it in the UI."
+                            },
+                            "file_index_menu": {
+                                "type": "string",
+                                "description": "File index menu placement type."
+                            },
+                            "file_menu": {
+                                "type": "string",
+                                "description": "File menu placement type."
+                            },
+                            "global_navigation": {
+                                "type": "string",
+                                "description": "Global navigation placement type."
+                            },
+                            "grade_passback": {
+                                "type": "string",
+                                "description": "Grade pass-back placement type."
+                            },
+                            "homework_selection": {
+                                "type": "string",
+                                "description": "Homework selection placement type."
+                            },
+                            "homework_submission": {
+                                "type": "string",
+                                "description": "Homework submission placement type."
+                            },
+                            "launch_presentation_document_target": {
+                                "type": "string",
+                                "description": "Tells us if it should be opened in another window."
+                            },
+                            "link_selection": {
+                                "type": "string",
+                                "description": "Link selection placement type."
+                            },
+                            "migration_selection": {
+                                "type": "string",
+                                "description": "Migration selection placement type."
+                            },
+                            "module_group_menu": {
+                                "type": "string",
+                                "description": "Module group menu placement type."
+                            },
+                            "module_index_menu": {
+                                "type": "string",
+                                "description": "Module index menu placement type."
+                            },
+                            "account_navigation": {
+                                "type": "string",
+                                "description": "account navigation placement type."
+                            },
+                            "assignment_group_menu": {
+                                "type": "string",
+                                "description": "Assignment group menu placement type."
+                            },
+                            "assignment_index_menu": {
+                                "type": "string",
+                                "description": "Assignment index menu placement type."
+                            },
+                            "assignment_menu": {
+                                "type": "string",
+                                "description": "Assignment menu placement type."
+                            },
+                            "assignment_selection": {
+                                "type": "string",
+                                "description": "Assignment selection placement type."
+                            },
+                            "canvas_caliper_url": {
+                                "type": "string",
+                                "description": "URL to caliper endpoint if supported by the tool."
+                            },
+                            "collaboration": {
+                                "type": "string",
+                                "description": "Collaboration placement type."
+                            },
+                            "content_migration": {
+                                "type": "string",
+                                "description": "Content migration placement type."
+                            },
+                            "course_assignments_menu": {
+                                "type": "string",
+                                "description": "Course assignments menu placement type."
+                            },
+                            "course_navigation": {
+                                "type": "string",
+                                "description": "Course navigation placement type."
+                            },
+                            "module_menu": {
+                                "type": "string",
+                                "description": "Module menu placement type."
+                            },
+                            "post_grades": {
+                                "type": "string",
+                                "description": "Post grades placement type."
+                            },
+                            "quiz_index_menu": {
+                                "type": "string",
+                                "description": "Quiz index menu placement type."
+                            },
+                            "quiz_menu": {
+                                "type": "string",
+                                "description": "Quiz menu placement type."
+                            },
+                            "similarity_detection": {
+                                "type": "string",
+                                "description": "Plagiarism platform placement."
+                            },
+                            "student_context_card": {
+                                "type": "string",
+                                "description": "Student context card placement type."
+                            },
+                            "text": {
+                                "type": "string",
+                                "description": "Identifies the name of the tool, default what the user can see if no label is set."
+                            },
+                            "tool_configuration": {
+                                "type": "string",
+                                "description": "Identifies the LTI tool configuration dataset."
+                            },
+                            "use_1_3": {
+                                "type": "string",
+                                "description": "LTI 1.3 compliant tool."
+                            },
+                            "user_navigation": {
+                                "type": "string",
+                                "description": "User navigation placement type."
+                            },
+                            "visibility": {
+                                "type": "string",
+                                "description": "Controls if it is an admin only tool, takes values of `admin` and `members`."
+                            },
+                            "wiki_index_menu": {
+                                "type": "string",
+                                "description": "Wiki index menu placement type."
+                            },
+                            "wiki_page_menu": {
+                                "type": "string",
+                                "description": "Wiki page menu placement type."
+                            },
+                            "assignment_edit": {
+                                "type": "string",
+                                "description": "Assignment edit placement type."
+                            },
+                            "assignment_view": {
+                                "type": "string",
+                                "description": "Assignment view placement type."
+                            },
+                            "module_index_menu_modal": {
+                                "type": "string",
+                                "description": "Module index menu modal placement type."
+                            },
+                            "module_menu_modal": {
+                                "type": "string",
+                                "description": "Module menu modal placement type."
+                            },
+                            "submission_type_selection": {
+                                "type": "string",
+                                "description": "Submission type selection placement type."
+                            },
+                            "top_navigation": {
+                                "type": "string",
+                                "description": "Top navigation placement type."
+                            },
+                            "resource_selection": {
+                                "type": "string",
+                                "description": "Resource selection placement type."
+                            }
+                        },
+                        "additionalProperties": false,
+                        "description": "LTI application settings, such as placements, links, etc."
+                    },
+                    "unified_tool_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The unique identifier of the tool."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "workflow_state",
+                    "consumer_key",
+                    "allow_membership_service_access",
+                    "name"
+                ],
+                "title": "Stores data about installed LTI 1 and 1.3 tools."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 3
+}

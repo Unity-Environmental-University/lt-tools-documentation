@@ -1,0 +1,180 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the conference."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Data model for Conferences in Canvas.",
+                "description": "Integrates with external conferencing solutions like BigBlueButton."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the user that created the conference."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when record was updated."
+                    },
+                    "context_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of this conference's context."
+                    },
+                    "context_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Account",
+                            "Course",
+                            "Group"
+                        ],
+                        "description": "The type of this conference's context."
+                    },
+                    "start_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The date the conference started at, NULL if it hasn't started."
+                    },
+                    "end_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The date that the conference ended at, NULL if it hasn't ended."
+                    },
+                    "context_code": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "A string identifying the context."
+                    },
+                    "started_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The time at which this conference actually started at, NULL if it hasn't started."
+                    },
+                    "user_ids": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Array of user ids that are participants in the conference."
+                    },
+                    "ended_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The time at which this conference actually ended, NULL if it hasn't ended."
+                    },
+                    "recording_ready": {
+                        "type": "boolean",
+                        "description": "Whether the conference's recording has been processed."
+                    },
+                    "conference_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "AdobeConnect",
+                            "BigBlueButton",
+                            "CiscoWebex",
+                            "DimDim",
+                            "Wimba",
+                            "Wiziq"
+                        ],
+                        "description": "The type of conference."
+                    },
+                    "conference_key": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The 3rd party's ID for the conference."
+                    },
+                    "description": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "The description for the conference."
+                    },
+                    "duration": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "The expected duration the conference is supposed to last."
+                    },
+                    "settings": {
+                        "type": "string",
+                        "description": "Settings for the given conference."
+                    },
+                    "title": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The title of the conference."
+                    },
+                    "uuid": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "A unique ID used for integrations."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "context_id",
+                    "context_type",
+                    "conference_type",
+                    "title"
+                ],
+                "title": "Data model for Conferences in Canvas.",
+                "description": "Integrates with external conferencing solutions like BigBlueButton."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 2
+}

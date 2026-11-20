@@ -1,0 +1,115 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "unique identifier of a role permission."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "A customization to the default permissions granted by a role."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "permission": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Permission assigned to a role, see the dictionary of permissions keyed by name in Canvas Roles API documentation."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when this record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of last update to this record."
+                    },
+                    "role_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Unique ID of a role."
+                    },
+                    "context_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for the folders's context (account, course, user)."
+                    },
+                    "context_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Account"
+                        ],
+                        "description": "The type of the object represented by context_id."
+                    },
+                    "locked": {
+                        "type": "boolean",
+                        "description": "Whether the permission is locked by this role."
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "Whether the role has the permission."
+                    },
+                    "applies_to_self": {
+                        "type": "boolean",
+                        "description": "Whether the permission applies to the account this role is in. Only present if enabled is true."
+                    },
+                    "applies_to_descendants": {
+                        "type": "boolean",
+                        "description": "Whether the permission cascades down to sub accounts of the account this role is in. Only present if enabled is true."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "role_id",
+                    "context_id",
+                    "context_type",
+                    "locked",
+                    "enabled",
+                    "applies_to_self",
+                    "applies_to_descendants"
+                ],
+                "title": "A customization to the default permissions granted by a role."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 1
+}

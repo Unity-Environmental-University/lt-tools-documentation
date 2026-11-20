@@ -1,0 +1,179 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier of a wiki page record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Stores text data that is linked to a wiki and a course.",
+                "description": "Also known as Pages. Pages store content and educational resources that are part of a course or group but don't\nnecessarily belong in an assignment. Pages can include text, video, and links to files and other course or group\ncontent. Pages can also be linked to other pages. They can also be used as a collaboration tool for course or group\nwikis where only specific users can have access. Canvas keeps the entire history of the page to account for changes\nover time."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique ID of a user."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp showing when a `wiki_pages` record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp showing when a `wiki_pages` record was updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "active",
+                            "deleted",
+                            "post_delayed",
+                            "unpublished"
+                        ],
+                        "description": "The state of a wiki page."
+                    },
+                    "context_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for the context of `wiki_pages` (account, course, user)."
+                    },
+                    "context_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Course",
+                            "Group"
+                        ],
+                        "description": "The type of the object represented by `context_id`."
+                    },
+                    "assignment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Assignment identifier when using `wiki_page` assignment type for an assignment."
+                    },
+                    "migration_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "An identifier used by the Blueprint system to match with the blueprint content."
+                    },
+                    "wiki_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier of an associated wiki record."
+                    },
+                    "old_assignment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "An old assignment identifier."
+                    },
+                    "todo_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date to set when setting this page as student to-do."
+                    },
+                    "editing_roles": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "CSV list of the roles that are allowed to edit this page. Possible values are `teachers`, `students`, `public`."
+                    },
+                    "revised_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp showing when page was last revised."
+                    },
+                    "body": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "The body of the wiki page record (includes html tags)."
+                    },
+                    "url": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "The HTML body of the page."
+                    },
+                    "title": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The name of the wiki page record."
+                    },
+                    "protected_editing": {
+                        "type": "boolean",
+                        "description": "Editing protection for the wiki page. It is false by default."
+                    },
+                    "could_be_locked": {
+                        "type": "boolean",
+                        "description": "True if the wiki page can be locked. This prevents it from being visible to others until ready."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "workflow_state",
+                    "context_id",
+                    "context_type",
+                    "wiki_id"
+                ],
+                "title": "Stores text data that is linked to a wiki and a course.",
+                "description": "Also known as Pages. Pages store content and educational resources that are part of a course or group but don't\nnecessarily belong in an assignment. Pages can include text, video, and links to files and other course or group\ncontent. Pages can also be linked to other pages. They can also be used as a collaboration tool for course or group\nwikis where only specific users can have access. Canvas keeps the entire history of the page to account for changes\nover time."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 3
+}

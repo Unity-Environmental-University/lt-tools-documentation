@@ -1,0 +1,243 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for a content tag record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "In the context of LTI, joins `context_external_tools` to either `assignments` or to `context_modules`.",
+                "description": "Some of the ways to use this table would be to: identify the external tool that is used to submit an assignment,\nidentify the items that are in modules (the IDs in this table are also referred to as `module_item_id`), identify\nthe learning outcome group that an outcome is part of."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a `content_tags` record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a `content_tags` record was updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "active",
+                            "unpublished",
+                            "deleted"
+                        ],
+                        "description": "The workflow state of the content tag."
+                    },
+                    "context_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for the `content_tags` context (account, course, user). Depends on `context_type` value: `Course`: `courses.id`, `Assignment`: `assignments.id`."
+                    },
+                    "context_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Account",
+                            "Assignment",
+                            "Course",
+                            "LearningOutcomeGroup",
+                            "Quizzes::Quiz",
+                            "User"
+                        ],
+                        "description": "The type of the object represented by `context_id`, typically `Course` or `Account` or `User`."
+                    },
+                    "context_code": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "An asset string describing the content tag context (for example: `assignment_3`)."
+                    },
+                    "comments": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "Comments associated with the tag."
+                    },
+                    "migration_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The ID of the migration that created the content tag."
+                    },
+                    "content_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Refers to the ID of the object that is linked to another object (`context_type`)."
+                    },
+                    "tag_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "context_module",
+                            "default",
+                            "learning_outcome",
+                            "learning_outcome_association"
+                        ],
+                        "description": "Identifies the type of tag."
+                    },
+                    "context_module_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the context module the content tag belongs to (if `tag_type` is `context_module`)."
+                    },
+                    "learning_outcome_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Has a value if `tag_type` is `learning_outcome`, indicates that the content (`content_type`, `content_id`) is aligned with the given LearningOutcome."
+                    },
+                    "mastery_score": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "when `tag_type` is `learning_outcome` and `content_type` is `AssessmentQuestionBank`, indicates the required score on a set of bank questions to show mastery."
+                    },
+                    "rubric_association_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "(deprecated) when `tag_type` is `learning_outcome` and `content_type` is `Assignment`, indicates the *RubricAssociation* which aligns the *LearningOutcome* to the *Assignment*."
+                    },
+                    "associated_asset_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Associated asset, whose use varies by ContentTag use. When `tag_type` is `learning_outcome_association`, then `content_type` is `LearningOutcome` and `associated_asset_type` is `learning_outcome_group` and indicates the *LearningOutcome* (`content_id`) is displayed within the *LearningOutcomeGroup* (`associated_asset_id`). When `content_type` is `ContextExternalTool` and `associated_asset_type` is `Lti::ResourceLink`, indicates the resource link associated with an LTI tool link."
+                    },
+                    "associated_asset_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "LearningOutcomeGroup",
+                            "Lti::ResourceLink"
+                        ],
+                        "description": "when `tag_type` is `learning_outcome_association`, then `content_type` is `LearningOutcome` and `associated_asset_type` is `learning_outcome_group` and indicates the *LearningOutcome* (`content_id`) is displayed within the *LearningOutcomeGroup* (`associated_asset_id`)."
+                    },
+                    "link_settings": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "Settings for LTI links associated with the content tag (for example, tool iframe width and height)."
+                    },
+                    "new_tab": {
+                        "type": "boolean",
+                        "description": "Whether or not the content should open in a new tab."
+                    },
+                    "position": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The position of the content tag relative to other content tags when listed in a UI."
+                    },
+                    "content_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Announcement",
+                            "AssessmentQuestionBank",
+                            "Assignment",
+                            "Attachment",
+                            "ContextExternalTool",
+                            "ContextModuleSubHeader",
+                            "DiscussionTopic",
+                            "ExternalUrl",
+                            "LearningOutcome",
+                            "LearningOutcomeGroup",
+                            "LiveAssessments::Assessment",
+                            "Lti::MessageHandler",
+                            "Quizzes::Quiz",
+                            "Rubric",
+                            "WikiPage"
+                        ],
+                        "description": "The type of the tag's content. Corresponds to the tables that `content_id` is a foreign key for, the exceptions being: `Announcement` (for which `content_id` references the `discussion_topics` table) and `ContextModuleSubheader` and `ExternalUrl` (which have no tables)."
+                    },
+                    "url": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "The URL of the content where applicable (for example: the launch URL of a context_external_tool). Applicable when `content_type` is `ExternalUrl`, `ContextExternalTool` or `Lti::MessageHandler`."
+                    },
+                    "title": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "The title of the content tag."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "workflow_state",
+                    "context_id",
+                    "context_type"
+                ],
+                "title": "In the context of LTI, joins `context_external_tools` to either `assignments` or to `context_modules`.",
+                "description": "Some of the ways to use this table would be to: identify the external tool that is used to submit an assignment,\nidentify the items that are in modules (the IDs in this table are also referred to as `module_item_id`), identify\nthe learning outcome group that an outcome is part of."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 3
+}

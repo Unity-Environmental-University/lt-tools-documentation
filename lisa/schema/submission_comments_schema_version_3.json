@@ -1,0 +1,203 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of this submission comment."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "This table contains attributes related to the submission comments feature in Canvas."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "comment": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "The text of the submission comment."
+                    },
+                    "submission_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the associated submission."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The date this comment was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The date this comment was updated."
+                    },
+                    "context_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the course this comment is associated with."
+                    },
+                    "context_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Course"
+                        ],
+                        "description": "The type of the object represented by `context_id`, typically `Course`."
+                    },
+                    "author_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the commenting user."
+                    },
+                    "media_comment_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "For media comments, the ID of the associated media object."
+                    },
+                    "media_comment_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "audio",
+                            "video",
+                            "audio/aac",
+                            "audio/amr",
+                            "audio/flac",
+                            "audio/mp4",
+                            "audio/mpeg",
+                            "audio/ogg",
+                            "audio/vnd.dlna.adts",
+                            "audio/wav",
+                            "audio/webm",
+                            "audio/x-m4a",
+                            "audio/x-ms-wma",
+                            "audio/x-wav",
+                            "video/3gpp",
+                            "video/avi",
+                            "video/mp4",
+                            "video/mpeg",
+                            "video/ogg",
+                            "video/quicktime",
+                            "video/webm",
+                            "video/x-m4v",
+                            "video/x-matroska",
+                            "video/x-ms-asf",
+                            "video/x-ms-wmv",
+                            "video/x-msvideo"
+                        ],
+                        "description": "For media comments, the type of the associated media object."
+                    },
+                    "attachment_ids": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "A comma-separated list of attachment IDs associated with this comment."
+                    },
+                    "attempt": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The particular attempt (on the associated submission) that this comment pertains to."
+                    },
+                    "hidden": {
+                        "type": "boolean",
+                        "description": "True if this comment is not visible to the owner of the submission."
+                    },
+                    "author_name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The name of the commenting user."
+                    },
+                    "group_comment_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "For group assignments, a value that is unique for all copies of this comment on submissions in the same group."
+                    },
+                    "assessment_request_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "For peer-reviewed assignments, the ID of the Assessment Request this comment is associated with."
+                    },
+                    "anonymous": {
+                        "type": "boolean",
+                        "description": "True if this is a peer-reviewed comment for an assignment with anonymous peer reviews enabled. Does not apply to instructor comments for anonymously-graded assignments."
+                    },
+                    "teacher_only_comment": {
+                        "type": "boolean",
+                        "description": "Indicates whether the comment was provided by a teacher."
+                    },
+                    "provisional_grade_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "For moderated assignments, the provisional grade this comment is tied to."
+                    },
+                    "draft": {
+                        "type": "boolean",
+                        "description": "True if this comment was saved as a draft."
+                    },
+                    "edited_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The date this comment was last edited."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "draft"
+                ],
+                "title": "This table contains attributes related to the submission comments feature in Canvas."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 3
+}

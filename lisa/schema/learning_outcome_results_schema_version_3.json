@@ -1,0 +1,231 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for a learning outcome result record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Learning outcome results are a student's mastery score on a given outcome.",
+                "description": "This table contains dimensions for learning outcome results."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique ID of a user who made the submission."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a learning_outcome_results record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a learning_outcome_results record was updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "active",
+                            "deleted"
+                        ],
+                        "description": "The current state of a learning outcome result record."
+                    },
+                    "context_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for the learning_outcome_results's context (account, course, user)."
+                    },
+                    "context_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Course"
+                        ],
+                        "description": "The type of the object represented by `context_id`, typically `Course` or `Account` or `User`."
+                    },
+                    "context_code": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Alternate specification of learning outcome result context as single string."
+                    },
+                    "learning_outcome_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Identifies the learning outcome this result is associated with."
+                    },
+                    "associated_asset_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Polymorphic foreign key to the associated asset this result is associated with."
+                    },
+                    "associated_asset_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "AssessmentQuestion",
+                            "LiveAssessments::Assessment",
+                            "Assignment",
+                            "Quizzes::Quiz"
+                        ],
+                        "description": "Type of the associated asset this result is associated with."
+                    },
+                    "score": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "The student's score."
+                    },
+                    "possible": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "Total number of points possible."
+                    },
+                    "mastery": {
+                        "type": "boolean",
+                        "description": "Boolean indicating whether user achieved mastery."
+                    },
+                    "attempt": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The total number of attempts, or submissions."
+                    },
+                    "original_score": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "Score on the first attempt."
+                    },
+                    "original_possible": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "Possible points on the first attempt."
+                    },
+                    "original_mastery": {
+                        "type": "boolean",
+                        "description": "Boolean indicating whether user achieved mastery."
+                    },
+                    "assessed_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Time when the result was assessed."
+                    },
+                    "submitted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Time when the submission was submitted."
+                    },
+                    "association_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Polymorphic foreign key to the aligned learning object this result is associated with."
+                    },
+                    "association_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Assignment",
+                            "Quizzes::Quiz",
+                            "RubricAssociation"
+                        ],
+                        "description": "Type of the aligned learning object this result is associated with."
+                    },
+                    "content_tag_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Foreign key to the content tag representing the learning outcome alignment this result is associated with."
+                    },
+                    "user_uuid": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The uuid of the user who made the submission."
+                    },
+                    "artifact_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Polymorphic foreign key to the assessed artifact this result is associated with."
+                    },
+                    "artifact_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "LiveAssessments::Submission",
+                            "Quizzes::QuizSubmission",
+                            "RubricAssessment",
+                            "Submission"
+                        ],
+                        "description": "Type of the assessed artifact this result is associated with."
+                    },
+                    "hide_points": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if outcome result points should be hidden in the Learning Mastery Gradebook and reports. If enabled, replace points with the description of the highest scoring outcome criterion rating."
+                    },
+                    "hidden": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if outcome result should be hidden from the Learning Mastery Gradebook and reports."
+                    },
+                    "percent": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "Percent of maximum points possible for an outcome, scaled to reflect any custom mastery levels that differ from the learning outcome."
+                    },
+                    "title": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Title for identifying the result."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "workflow_state",
+                    "hide_points",
+                    "hidden"
+                ],
+                "title": "Learning outcome results are a student's mastery score on a given outcome.",
+                "description": "This table contains dimensions for learning outcome results."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 3
+}

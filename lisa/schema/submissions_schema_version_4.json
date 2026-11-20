@@ -1,0 +1,360 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Primary key of this record in the Canvas submissions dataset."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "This table stores submission records for an assignment."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "attachment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of an attachment belonging to this submission if `submission_type` is `online_url`. Generally superseded by `attachment_ids`."
+                    },
+                    "course_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the associated assignment's course."
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the user who created the submission."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when the submission was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when the submission was last updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "graded",
+                            "pending_review",
+                            "submitted",
+                            "unsubmitted",
+                            "deleted"
+                        ],
+                        "description": "Life-cycle state for the submission."
+                    },
+                    "assignment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the associated assignment."
+                    },
+                    "media_comment_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "For media comments, the ID of the media object associated with this comment, as a string."
+                    },
+                    "media_comment_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "audio",
+                            "audio/*",
+                            "video",
+                            "video/*",
+                            "audio/aac",
+                            "audio/amr",
+                            "audio/flac",
+                            "audio/mp4",
+                            "audio/mpeg",
+                            "audio/ogg",
+                            "audio/vnd.dlna.adts",
+                            "audio/wav",
+                            "audio/webm",
+                            "audio/x-m4a",
+                            "audio/x-ms-wma",
+                            "audio/x-wav",
+                            "video/3gpp",
+                            "video/avi",
+                            "video/mp4",
+                            "video/mpeg",
+                            "video/ogg",
+                            "video/quicktime",
+                            "video/webm",
+                            "video/x-m4v",
+                            "video/x-matroska",
+                            "video/x-ms-asf",
+                            "video/x-ms-wmv",
+                            "video/x-msvideo"
+                        ],
+                        "description": "For media comments, the type of the media object associated with this comment."
+                    },
+                    "attachment_ids": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "A comma-delimited string representing the IDs of attachments belonging to this submission."
+                    },
+                    "posted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The date this submission was posted to the student, or NULL if it has not been posted."
+                    },
+                    "group_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Foreign key to the `groups` table."
+                    },
+                    "score": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "The raw score."
+                    },
+                    "attempt": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The number of attempts made including this one."
+                    },
+                    "submitted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The timestamp when the assignment was submitted. Note: this date may be missing even though the assignment was submitted and graded (example scenarios: paper assignments, submissions through external tools, no submission required, etc.); additionally, if the student failed to submit an assignment by the due date, the assignment can be graded by the instructor (and will be missing a `submitted_at` date)."
+                    },
+                    "quiz_submission_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Foreign key to the `quiz_submissions` dataset (if `submission_type` is `online_quiz`). If this field contains a value it means that the assignment is a quiz."
+                    },
+                    "extra_attempts": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Extra submission attempts allowed for the given user and assignment."
+                    },
+                    "grading_period_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the grading period that this submission's assignment belongs to."
+                    },
+                    "grade": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Letter grade mapped from the score by the grading scheme."
+                    },
+                    "submission_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "basic_lti_launch",
+                            "discussion_topic",
+                            "external_tool",
+                            "media_recording",
+                            "online_file_upload",
+                            "online_quiz",
+                            "online_text_entry",
+                            "online_upload",
+                            "online_url",
+                            "student_annotation"
+                        ],
+                        "description": "The type of submission."
+                    },
+                    "processed": {
+                        "type": "boolean",
+                        "description": "Valid only when there is a file/attachment associated with the submission. By default, this attribute is set to *false* when making the assignment submission. When a submission has a file/attachment associated with it, upon submitting the assignment a snapshot is saved and its value is set to *true*. Defaults to NULL."
+                    },
+                    "grade_matches_current_submission": {
+                        "type": "boolean",
+                        "description": "A boolean flag which is false if the student has re-submitted since the submission was last graded. Valid only when a score has been assigned to a submission. This is set to *false* if a student makes a new submission to an already graded assignment. This is done to indicate that the current grade given by the teacher is not for the most recent submission by the student. It is set to *true* if a score has been given and there is no new submission. Defaults to NULL."
+                    },
+                    "published_score": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "The raw score (identical to score)."
+                    },
+                    "published_grade": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Valid only for a graded submission. The values are strings that reflect the grading type used. For example, a scoring method of `points` will show `4` if given a `4` out of `5`, and a scoring method of `letter grade` will show `B` for the same score (assuming a grading scale where 80-90% is a `B`). Defaults to NULL."
+                    },
+                    "graded_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when the submission was graded."
+                    },
+                    "student_entered_score": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "A \"what-if\" score that the student has entered for this submission."
+                    },
+                    "grader_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the user who graded the submission. This will be NULL for submissions that haven't been graded yet. It will be a positive number if a real user has graded the submission and a negative number if the submission was graded by a process (e.g. Quiz auto-grader and auto-grading LTI tools). Specifically auto-graded quizzes set `grader_id` to the negative of the quiz ID. Submissions auto-graded by LTI tools set `grader_id` to the negative of the tool ID."
+                    },
+                    "submission_comments_count": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "A count of the number of comments made on this submission."
+                    },
+                    "media_object_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the associated MediaObject."
+                    },
+                    "turnitin_data": {
+                        "type": "string",
+                        "description": "A YAML string representing plagiarism data associated with this submission."
+                    },
+                    "cached_due_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The de-normalized cached due date for this submission."
+                    },
+                    "excused": {
+                        "type": "boolean",
+                        "description": "Whether the assignment is excused. Excused assignments have no impact on a user's grade."
+                    },
+                    "graded_anonymously": {
+                        "type": "boolean",
+                        "description": "Denotes how the grading has been performed. Possible values are `graded_anonymously` and `not_graded_anonymously`."
+                    },
+                    "late_policy_status": {
+                        "type": "string",
+                        "maxLength": 16,
+                        "description": "The status of the submission in relation to the late policy. Only reflects statuses manually applied by a grader. Can be late, missing, none, or NULL."
+                    },
+                    "points_deducted": {
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "exclusiveMinimum": -10000000000,
+                        "exclusiveMaximum": 10000000000,
+                        "description": "The amount of points automatically deducted from the score by the missing/late policy for a late or missing assignment."
+                    },
+                    "seconds_late_override": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "For late submissions, the amount of time (in seconds) the submission is late by."
+                    },
+                    "lti_user_id": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "The LTI context ID of the submitter."
+                    },
+                    "anonymous_id": {
+                        "type": "string",
+                        "maxLength": 5,
+                        "description": "A unique short ID identifying this submission without reference to the owning user."
+                    },
+                    "last_comment_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The date of the last non-draft comment on this submission by a user other than the submitter."
+                    },
+                    "cached_quiz_lti": {
+                        "type": "boolean",
+                        "description": "True if the associated assignment is a Quizzes.Next assignment."
+                    },
+                    "cached_tardiness": {
+                        "type": "string",
+                        "maxLength": 16,
+                        "description": "(deprecated) The status of the submission in relation to the late policy, including automatically-applied statuses. Can be `late`, `missing` or NULL. This column is deprecated and will never be populated."
+                    },
+                    "custom_grade_status_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Foreign key to the `custom_grade_statuses` table, indicating the custom grade status applied to this submission."
+                    },
+                    "resource_link_lookup_uuid": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "When the submission is from an LTI tool, the resource link lookup ID is assigned to the submission in order to recover the custom parameters."
+                    },
+                    "redo_request": {
+                        "type": "boolean",
+                        "description": "True if the assignment has been reassigned to the student for resubmission."
+                    },
+                    "body": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "The content of the submission, if it was submitted directly in a text field."
+                    },
+                    "url": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "URL content for the submission."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "course_id",
+                    "user_id",
+                    "workflow_state",
+                    "assignment_id",
+                    "cached_quiz_lti",
+                    "redo_request"
+                ],
+                "title": "This table stores submission records for an assignment."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 4
+}

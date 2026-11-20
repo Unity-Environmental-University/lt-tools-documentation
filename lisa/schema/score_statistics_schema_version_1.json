@@ -1,0 +1,101 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the statistics object."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "This table stores aggregate statistics for scores on individual assignments."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The date this statistics object was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The date this statistics object was updated."
+                    },
+                    "assignment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the assignment referred to by this object."
+                    },
+                    "mean": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "The mean score for all graded submissions on this assignment."
+                    },
+                    "count": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The number of submissions that have been graded for this assignment, excluding excused submissions."
+                    },
+                    "minimum": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "The lowest score for any graded submission on this assignment."
+                    },
+                    "maximum": {
+                        "type": "number",
+                        "format": "float64",
+                        "description": "The highest score for any graded submission on this assignment."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "assignment_id",
+                    "mean",
+                    "count",
+                    "minimum",
+                    "maximum"
+                ],
+                "title": "This table stores aggregate statistics for scores on individual assignments."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 1
+}

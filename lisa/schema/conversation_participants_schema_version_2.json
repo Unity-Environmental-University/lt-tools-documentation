@@ -1,0 +1,123 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for a conversation message participants record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "The participants in a Conversation."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique ID of a user."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when a `conversation_participants` record was updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "read",
+                            "unread",
+                            "archived",
+                            "deleted"
+                        ],
+                        "description": "The workflow state of the message."
+                    },
+                    "has_attachments": {
+                        "type": "boolean",
+                        "description": "If the conversation has attachments."
+                    },
+                    "has_media_objects": {
+                        "type": "boolean",
+                        "description": "If the conversation has media objects associated."
+                    },
+                    "last_message_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The timestamp of the latest message."
+                    },
+                    "subscribed": {
+                        "type": "boolean",
+                        "description": "Indicates whether the current user is subscribed to the conversation."
+                    },
+                    "message_count": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The number of messages in the conversation."
+                    },
+                    "label": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Any label applied to the conversation, such as *starred*."
+                    },
+                    "tags": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "Tags used to identify multiple contexts such as course, group, etc."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "user_id",
+                    "workflow_state",
+                    "has_attachments",
+                    "has_media_objects"
+                ],
+                "title": "The participants in a Conversation."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 2
+}

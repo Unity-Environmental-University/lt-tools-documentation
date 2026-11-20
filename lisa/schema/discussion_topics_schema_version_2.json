@@ -1,0 +1,272 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of this topic."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "This table stores attributes for discussion topics in Canvas.",
+                "description": "Discussion topics are logical discussion threads. They can have many discussion entries. They also have their own\nmessage text for the message that started the topic."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "const": "__dap_oversized_truncated__"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "description": "The HTML content of the message body."
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Announcement"
+                        ],
+                        "description": "Discussion topic type. Two types are default (blank) and Announcement."
+                    },
+                    "attachment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Has a value if the discussion topic is associated with an attachment (file)."
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the discussion topic was deleted."
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The username of the topic creator."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The date the discussion topic was made."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The date the discussion topic was updated."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "active",
+                            "deleted",
+                            "locked",
+                            "post_delayed",
+                            "unpublished"
+                        ],
+                        "description": "Life-cycle state for the discussion topic."
+                    },
+                    "lock_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The datetime to lock the topic (if ever)."
+                    },
+                    "context_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the context that this discussion is used in, e.g. `courses`.`id` if `context_type` is `Course`."
+                    },
+                    "context_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "Course",
+                            "Group"
+                        ],
+                        "description": "The type of context this discussion is used with."
+                    },
+                    "locked": {
+                        "type": "boolean",
+                        "description": "Whether or not the discussion is *closed for comments*."
+                    },
+                    "assignment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier of the assignment if the topic is for grading, otherwise NULL."
+                    },
+                    "migration_id": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The unique identifier of the migration that imported this discussion topic."
+                    },
+                    "group_category_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier of the group category if the topic is a group discussion, otherwise NULL."
+                    },
+                    "cloned_item_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the item in which this discussion topic was cloned from."
+                    },
+                    "last_reply_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The datetime for when the last reply was in the topic."
+                    },
+                    "delayed_post_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The datetime to publish the topic (if not right away)."
+                    },
+                    "posted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The datetime the topic was posted. If it is NULL it hasn't been posted yet."
+                    },
+                    "root_topic_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "If the topic is for grading and a group assignment this will point to the original topic in the course."
+                    },
+                    "old_assignment_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "the assignment ID after you change a topic from graded to ungraded, then restores the old one if it goes back to graded."
+                    },
+                    "subtopics_refreshed_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The time at which the subtopics for a group category discussion was refreshed at."
+                    },
+                    "external_feed_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the external feed that this discussion topic was created from."
+                    },
+                    "podcast_enabled": {
+                        "type": "boolean",
+                        "description": "Boolean to determine if the podcast is enabled."
+                    },
+                    "podcast_has_student_posts": {
+                        "type": "boolean",
+                        "description": "If true, the podcast will include posts from students as well. Implies podcast_enabled."
+                    },
+                    "require_initial_post": {
+                        "type": "boolean",
+                        "description": "If true then a user may not respond to other replies until that user has made an initial reply."
+                    },
+                    "editor_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the editor of the discussion."
+                    },
+                    "discussion_type": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "side_comment",
+                            "threaded",
+                            "not_threaded"
+                        ],
+                        "description": "The type of discussion."
+                    },
+                    "pinned": {
+                        "type": "boolean",
+                        "description": "Whether or not the discussion has been *pinned* by an instructor."
+                    },
+                    "allow_rating": {
+                        "type": "boolean",
+                        "description": "Whether or not users can rate entries in this topic."
+                    },
+                    "only_graders_can_rate": {
+                        "type": "boolean",
+                        "description": "Whether or not grade permissions are required to rate entries."
+                    },
+                    "sort_by_rating": {
+                        "type": "boolean",
+                        "description": "Whether or not entries should be sorted by rating."
+                    },
+                    "todo_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date in which discussion topic will show up in the student planner feature."
+                    },
+                    "is_section_specific": {
+                        "type": "boolean",
+                        "description": "Boolean distinguishing if the topic is a section specific topic or not."
+                    },
+                    "position": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The position on the discussions index page under pinned items."
+                    },
+                    "title": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The topic title."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "updated_at",
+                    "workflow_state",
+                    "context_id",
+                    "context_type",
+                    "locked",
+                    "podcast_enabled",
+                    "podcast_has_student_posts",
+                    "require_initial_post",
+                    "pinned",
+                    "allow_rating",
+                    "only_graders_can_rate",
+                    "sort_by_rating",
+                    "is_section_specific"
+                ],
+                "title": "This table stores attributes for discussion topics in Canvas.",
+                "description": "Discussion topics are logical discussion threads. They can have many discussion entries. They also have their own\nmessage text for the message that started the topic."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 2
+}

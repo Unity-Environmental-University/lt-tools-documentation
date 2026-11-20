@@ -1,0 +1,119 @@
+{
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "meta": {
+                "type": "object",
+                "properties": {
+                    "ts": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "U",
+                            "D"
+                        ],
+                        "title": "Identifies if a record is to be upserted (inserted or updated) or (hard) deleted."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "ts"
+                ],
+                "title": "Meta-information associated with the record."
+            },
+            "key": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier for an access token record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id"
+                ],
+                "title": "Stores the access tokens for a user and developer tools.",
+                "description": "This table in Canvas Data 2 will only share developer tool specific token metadata. All users have an option to\ncreate an access token based on their role and level of data access."
+            },
+            "value": {
+                "type": "object",
+                "properties": {
+                    "developer_key_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique identifier of a developer key."
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The unique ID of the user the token acts as."
+                    },
+                    "real_user_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "If the token was created while masquerading, this is the real user doing the masquerading. Used for auditing."
+                    },
+                    "last_used_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of last access using this access token."
+                    },
+                    "expires_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The expiration date/time for this token. This may be a NULL value."
+                    },
+                    "purpose": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "For user-generated tokens, purpose can be manually set. For app-generated tokens, this should be generated based on the scope defined in the authentication process."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when an `access_tokens` record was created."
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp of when an `access_tokens` record was updated."
+                    },
+                    "scopes": {
+                        "type": "string",
+                        "description": "A list of scopes that can be applied to access tokens. i.e.: courses."
+                    },
+                    "workflow_state": {
+                        "type": "string",
+                        "enum": [
+                            "__dap_unspecified__",
+                            "active",
+                            "deleted",
+                            "pending"
+                        ],
+                        "description": "The current state of the access token record."
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "developer_key_id",
+                    "created_at",
+                    "updated_at",
+                    "workflow_state"
+                ],
+                "title": "Stores the access tokens for a user and developer tools.",
+                "description": "This table in Canvas Data 2 will only share developer tool specific token metadata. All users have an option to\ncreate an access token based on their role and level of data access."
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "key"
+        ]
+    },
+    "version": 2
+}
