@@ -25,6 +25,7 @@ flowchart TB
 | Trace the board and waypoint paths in a working Unity example | [Waste Management](waste-management/index.md) |
 | Upload a web build or work on the desktop utilities | [XR Tools](xr-tools/index.md) |
 | Check a signed desktop update for a platform | [XR Tools Updater Service](xr-tools-updater-service/index.md) |
+| Understand the ScrutinyXR authoring tool, its backend and the Unity 6 upgrade | [ScrutinyXR](scrutinyxr/index.md) |
 
 ## Trace a game session
 

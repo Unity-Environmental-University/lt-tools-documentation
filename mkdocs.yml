@@ -26,6 +26,7 @@ nav:
   - LISA: "!import https://github.com/Unity-Environmental-University/matt_lisa?branch=main"
   - XR Education:
       - How the tools work together: xr-education/index.md
+      - ScrutinyXR: xr-education/scrutinyxr/index.md
       - Summit: "!import https://github.com/Unity-Environmental-University/Summit?branch=main&docs_dir=docs/portal/*"
       - Trailhead: "!import https://github.com/Unity-Environmental-University/Trailhead?branch=main&docs_dir=docs/portal/*"
       - Waste Management: "!import https://github.com/Unity-Environmental-University/WasteManagement?branch=main"
